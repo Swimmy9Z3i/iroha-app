@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>車屋のいろは｜新人研修</title>
+<meta name="theme-color" content="#2A4A28">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green-dark: #2A4A28;
+  --green: #3B6939;
+  --gold: #C8972A;
+  --cream: #F9F5EE;
+  --amber: #B5830A;
+  --rust: #9B3A2A;
+  --blue: #2A5A7A;
+  --header-h: 52px;
+  --bread-h: 40px;
+  --nav-h: 64px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'M PLUS Rounded 1c', 'Klee One', sans-serif;
+  background: var(--cream);
+  color: #222;
+  min-height: 100vh;
+}
+
+/* HEADER */
+#app-header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: var(--green-dark);
+  display: flex; align-items: center;
+  padding: 0 12px;
+  z-index: 100;
+  gap: 8px;
+}
+#header-title {
+  flex: 1;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  font-family: 'Klee One', serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#btn-back {
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: none;
+  align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+#btn-back.visible { display: flex; }
+
+/* BREADCRUMB */
+#breadcrumb {
+  position: fixed; top: var(--header-h); left: 0; right: 0;
+  height: var(--bread-h);
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  display: flex; align-items: center;
+  padding: 0 12px;
+  z-index: 99;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.bc-item { font-size: 13px; color: var(--green); cursor: pointer; text-decoration: underline; }
+.bc-sep { font-size: 13px; color: #999; margin: 0 4px; }
+.bc-cur { font-size: 13px; color: #555; cursor: default; text-decoration: none; }
+
+/* MAIN CONTENT */
+#main-content {
+  position: fixed;
+  top: calc(var(--header-h) + var(--bread-h));
+  left: 0; right: 0;
+  bottom: var(--nav-h);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: var(--cream);
+}
+
+/* SCREENS */
+.screen { display: none; padding: 16px 12px 28px; }
+.screen.active { display: block; }
+
+/* HOME */
+.home-logo { text-align: center; padding: 8px 0 4px; }
+.home-logo h2 { font-family: 'Klee One', serif; font-size: 22px; color: var(--green-dark); }
+.home-logo p { font-size: 13px; color: #777; margin-top: 4px; }
+.home-lead {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-top: 14px;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #444;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border-left: 4px solid var(--green);
+}
+.theme-list { margin-top: 18px; display: flex; flex-direction: column; gap: 12px; }
+.theme-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px;
+  display: flex; align-items: center; gap: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 2px solid transparent;
+  border-left: 5px solid var(--green);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.theme-card:active { box-shadow: 0 4px 12px rgba(59,105,57,0.2); }
+.theme-card .t-num {
+  flex-shrink: 0;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--green-dark);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 16px;
+}
+.theme-card .icon { font-size: 30px; flex-shrink: 0; }
+.theme-card .t-body { flex: 1; min-width: 0; }
+.theme-card .t-title { font-size: 17px; font-weight: 700; color: var(--green-dark); }
+.theme-card .t-desc { font-size: 12px; color: #888; margin-top: 3px; line-height: 1.5; }
+.theme-card .arrow { color: #ccc; font-size: 20px; flex-shrink: 0; }
+.theme-card.quiz-card { border-left-color: var(--gold); }
+.theme-card.quiz-card .t-num { background: var(--gold); }
+.theme-card .t-done { font-size: 11px; color: var(--green); font-weight: 700; margin-top: 4px; }
+
+/* LESSON */
+.lesson-intro {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 14.5px;
+  line-height: 1.85;
+  color: #333;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border-top: 4px solid var(--green);
+  margin-bottom: 6px;
+}
+.section-title {
+  font-size: 16px; font-weight: 700;
+  color: var(--green-dark);
+  border-left: 4px solid var(--gold);
+  padding-left: 8px;
+  margin: 22px 0 10px;
+}
+.body-text { font-size: 14px; line-height: 1.85; color: #3a3a3a; margin-bottom: 10px; }
+.body-text b, .body-text strong { color: var(--green-dark); }
+
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 14px; border-radius: 8px; }
+table {
+  width: 100%; min-width: max-content;
+  border-collapse: collapse; font-size: 14px;
+  background: #fff; border-radius: 8px; overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 0;
+}
+th { background: var(--green-dark); color: #fff; padding: 9px 10px; text-align: left; font-size: 13px; font-weight: 600; white-space: nowrap; }
+td { padding: 9px 10px; border-bottom: 1px solid #eee; vertical-align: middle; white-space: nowrap; }
+th:first-child, td:first-child { white-space: normal; min-width: 90px; }
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: #f7f9f7; }
+.tot { font-weight: 700; color: var(--green-dark); }
+.taxed { color: var(--rust); font-weight: 700; }
+.free { color: var(--green); font-weight: 700; }
+
+.info-box {
+  background: #fff;
+  border-left: 4px solid var(--amber);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 14px;
+  font-size: 14px; color: #444;
+  margin-bottom: 12px; line-height: 1.8;
+}
+.info-box.green { border-left-color: var(--green); }
+.info-box.rust { border-left-color: var(--rust); }
+.info-box.gold { border-left-color: var(--gold); }
+.info-box .ib-head { font-weight: 700; color: var(--green-dark); display: block; margin-bottom: 4px; }
+
+/* たとえ話ボックス */
+.analogy {
+  background: #fffaf0;
+  border: 1.5px dashed var(--gold);
+  border-radius: 12px;
+  padding: 12px 14px 12px 44px;
+  font-size: 14px; line-height: 1.8; color: #5a4a20;
+  margin-bottom: 14px;
+  position: relative;
+}
+.analogy::before {
+  content: "💡";
+  position: absolute; left: 12px; top: 11px;
+  font-size: 20px;
+}
+.analogy b { color: var(--amber); }
+
+/* 2カラム比較カード */
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.cmp-card { background: #fff; border-radius: 12px; padding: 14px 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); border-top: 4px solid var(--green); }
+.cmp-card.alt { border-top-color: var(--blue); }
+.cmp-card .cc-icon { font-size: 28px; }
+.cmp-card .cc-title { font-size: 16px; font-weight: 700; color: var(--green-dark); margin: 4px 0 8px; }
+.cmp-card.alt .cc-title { color: var(--blue); }
+.cmp-card ul { list-style: none; }
+.cmp-card li { font-size: 13px; line-height: 1.7; color: #444; padding-left: 16px; position: relative; margin-bottom: 4px; }
+.cmp-card li::before { content: "・"; position: absolute; left: 0; color: var(--gold); font-weight: 700; }
+
+/* レッスン末尾のクイズ誘導 */
+.quiz-cta {
+  margin-top: 26px;
+  background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+  border-radius: 14px;
+  padding: 18px 16px;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(42,74,40,0.25);
+}
+.quiz-cta:active { transform: scale(0.99); }
+.quiz-cta .qc-label { font-size: 13px; opacity: 0.9; }
+.quiz-cta .qc-title { font-size: 18px; font-weight: 700; margin-top: 4px; }
+.quiz-cta .qc-sub { font-size: 12px; opacity: 0.85; margin-top: 6px; }
+
+/* QUIZ */
+.quiz-progress { font-size: 13px; color: #888; margin-bottom: 6px; }
+.quiz-bar-bg { height: 6px; background: #e3e0d8; border-radius: 4px; overflow: hidden; margin-bottom: 18px; }
+.quiz-bar-fill { height: 100%; background: var(--green); border-radius: 4px; transition: width 0.3s; }
+.quiz-q {
+  background: #fff; border-radius: 14px;
+  padding: 18px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  font-size: 17px; font-weight: 700; color: var(--green-dark);
+  line-height: 1.6; margin-bottom: 16px;
+}
+.quiz-q .q-tag { display: inline-block; font-size: 11px; font-weight: 700; color: #fff; background: var(--gold); padding: 2px 8px; border-radius: 20px; margin-bottom: 8px; }
+.choices { display: flex; flex-direction: column; gap: 10px; }
+.choice {
+  background: #fff; border: 2px solid #e0ddd5; border-radius: 12px;
+  padding: 14px 16px; font-size: 15px; color: #333;
+  cursor: pointer; text-align: left; transition: all 0.12s;
+  display: flex; align-items: center; gap: 10px;
+}
+.choice:active { border-color: var(--green); }
+.choice .c-mark { font-size: 18px; width: 22px; flex-shrink: 0; }
+.choice.correct { border-color: var(--green); background: #eef6ee; color: var(--green-dark); font-weight: 700; }
+.choice.wrong { border-color: var(--rust); background: #fbeeec; color: var(--rust); }
+.choice.disabled { pointer-events: none; opacity: 0.7; }
+.choice.correct.disabled, .choice.wrong.disabled { opacity: 1; }
+
+.ox-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.ox-btn {
+  background: #fff; border: 2px solid #e0ddd5; border-radius: 14px;
+  padding: 22px 0; font-size: 36px; cursor: pointer; transition: all 0.12s;
+}
+.ox-btn:active { border-color: var(--green); }
+.ox-btn .ox-label { display: block; font-size: 13px; color: #777; margin-top: 4px; }
+.ox-btn.correct { border-color: var(--green); background: #eef6ee; }
+.ox-btn.wrong { border-color: var(--rust); background: #fbeeec; }
+.ox-btn.disabled { pointer-events: none; }
+
+.feedback {
+  margin-top: 16px; border-radius: 12px; padding: 14px 16px;
+  font-size: 14px; line-height: 1.75; display: none;
+}
+.feedback.show { display: block; }
+.feedback.ok { background: #eef6ee; border-left: 4px solid var(--green); color: var(--green-dark); }
+.feedback.ng { background: #fbeeec; border-left: 4px solid var(--rust); color: var(--rust); }
+.feedback .fb-head { font-weight: 700; font-size: 15px; display: block; margin-bottom: 4px; }
+.feedback .fb-exp { color: #444; }
+
+.btn-next {
+  display: none;
+  width: 100%; margin-top: 16px;
+  background: var(--green); color: #fff; border: none;
+  border-radius: 12px; padding: 15px; font-size: 16px; font-weight: 700;
+  cursor: pointer; font-family: inherit;
+}
+.btn-next.show { display: block; }
+.btn-next:active { background: var(--green-dark); }
+
+/* QUIZ RESULT */
+.result-card { background: #fff; border-radius: 16px; padding: 28px 20px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+.result-card .r-emoji { font-size: 56px; }
+.result-card .r-score { font-size: 16px; color: #777; margin-top: 8px; }
+.result-card .r-num { font-size: 44px; font-weight: 700; color: var(--green-dark); font-family: 'Klee One', serif; }
+.result-card .r-num small { font-size: 22px; color: #aaa; }
+.result-card .r-msg { font-size: 15px; color: #444; margin-top: 12px; line-height: 1.7; }
+.result-btns { display: flex; gap: 10px; margin-top: 22px; }
+.result-btns button {
+  flex: 1; padding: 14px; border-radius: 12px; border: none;
+  font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit;
+}
+.btn-retry { background: var(--gold); color: #fff; }
+.btn-home { background: #eee; color: #555; }
+
+/* QUIZ MENU */
+.qmenu-card {
+  background: #fff; border-radius: 12px; padding: 16px;
+  margin-bottom: 10px; display: flex; align-items: center; gap: 14px;
+  cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  border-left: 4px solid var(--gold);
+}
+.qmenu-card:active { box-shadow: 0 3px 10px rgba(200,151,42,0.2); }
+.qmenu-card .icon { font-size: 28px; }
+.qmenu-card .qm-body { flex: 1; }
+.qmenu-card .qm-title { font-size: 16px; font-weight: 700; color: var(--green-dark); }
+.qmenu-card .qm-sub { font-size: 12px; color: #888; margin-top: 2px; }
+.qmenu-card .qm-best { font-size: 12px; color: var(--green); font-weight: 700; margin-top: 3px; }
+.qmenu-card .arrow { margin-left: auto; color: #ccc; font-size: 20px; }
+
+@media (min-width: 600px) {
+  #main-content { max-width: 640px; margin: 0 auto; }
+  #app-header, #breadcrumb, #bottom-nav { max-width: 640px; left: 50%; transform: translateX(-50%); }
+}
+
+/* BOTTOM NAV */
+#bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  background: #fff; border-top: 1px solid #ddd;
+  display: grid; grid-template-columns: repeat(6, 1fr);
+  z-index: 100;
+}
+.nav-tab {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 2px;
+  cursor: pointer; border: none; background: none; padding: 4px 2px;
+  transition: background 0.1s; font-family: inherit;
+}
+.nav-tab:active { background: #f0f0f0; }
+.nav-tab .n-icon { font-size: 22px; line-height: 1; }
+.nav-tab .n-label { font-size: 11px; color: #555; font-weight: 600; }
+.nav-tab.active-tab .n-label { color: var(--green); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="app-header">
+  <button id="btn-back" onclick="goBack()" aria-label="戻る">&#8592;</button>
+  <div id="header-title">車屋のいろは</div>
+</header>
+
+<!-- BREADCRUMB -->
+<nav id="breadcrumb">
+  <span class="bc-cur">ホーム</span>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div id="main-content">
+
+  <!-- ==================== HOME ==================== -->
+  <div class="screen active" id="screen-home">
+    <div class="home-logo">
+      <h2>車屋のいろは</h2>
+      <p>留盛自動車 新人スタッフ研修</p>
+    </div>
+    <div class="home-lead">
+      クルマ屋の仕事は、まず<b>「クルマの種類の見分け方」</b>から。
+      車検も、税金も、保険も、料金表も──ぜんぶ <b>「その車がどの区分か」</b> で決まります。
+      下のテーマを上から順に読んで、最後にクイズで力だめしをしましょう。
+    </div>
+    <div class="theme-list">
+      <div class="theme-card" onclick="showLesson('shumoku')">
+        <div class="t-num">1</div>
+        <div class="icon">🚗</div>
+        <div class="t-body">
+          <div class="t-title">車種区分の基礎</div>
+          <div class="t-desc">乗用車と貨物車・大きさ（普通/小型/軽）・ナンバーの数字・自家用と事業用</div>
+          <div class="t-done" id="done-shumoku"></div>
+        </div>
+        <div class="arrow">›</div>
+      </div>
+      <div class="theme-card" onclick="showLesson('zeikin')">
+        <div class="t-num">2</div>
+        <div class="icon">💰</div>
+        <div class="t-body">
+          <div class="t-title">車にかかる税金</div>
+          <div class="t-desc">自動車税・重量税・環境性能割・消費税（課税と非課税のちがい）</div>
+          <div class="t-done" id="done-zeikin"></div>
+        </div>
+        <div class="arrow">›</div>
+      </div>
+      <div class="theme-card" onclick="showLesson('shaken')">
+        <div class="t-num">3</div>
+        <div class="icon">🔍</div>
+        <div class="t-body">
+          <div class="t-title">車検のしくみ</div>
+          <div class="t-desc">車検とは・期間は何年ごと・料金の中身（法定費用と整備費用）</div>
+          <div class="t-done" id="done-shaken"></div>
+        </div>
+        <div class="arrow">›</div>
+      </div>
+      <div class="theme-card" onclick="showLesson('hoken')">
+        <div class="t-num">4</div>
+        <div class="icon">🛡️</div>
+        <div class="t-body">
+          <div class="t-title">自動車保険の基礎</div>
+          <div class="t-desc">自賠責（強制）と任意保険・何を守る保険か・自家用と事業用</div>
+          <div class="t-done" id="done-hoken"></div>
+        </div>
+        <div class="arrow">›</div>
+      </div>
+      <div class="theme-card quiz-card" onclick="showQuizMenu()">
+        <div class="t-num">✓</div>
+        <div class="icon">✏️</div>
+        <div class="t-body">
+          <div class="t-title">クイズで力だめし</div>
+          <div class="t-desc">テーマごとに〇×・選択クイズ。覚えたか確認しよう</div>
+        </div>
+        <div class="arrow">›</div>
+      </div>
+    </div>
+    <div class="info-box green" style="margin-top:18px;">
+      <span class="ib-head">📌 このアプリの使い方</span>
+      テーマを読み終えたら、画面いちばん下の「→ クイズに挑戦」を押すと、その内容のクイズが出ます。
+      間違えても解説が出るので、何度でも挑戦してOKです。
+    </div>
+  </div>
+
+  <!-- ==================== LESSON 1: 車種区分 ==================== -->
+  <div class="screen" id="screen-shumoku">
+    <div class="lesson-intro">
+      クルマには <b>たくさんの「区分（くぶん）」</b> があります。
+      お客様の車が「どの区分か」が分かれば、車検の値段・税金・保険・必要な書類が自動的に決まります。
+      まずはいちばん大事な <b>3つの分け方</b> を覚えましょう。
+    </div>
+
+    <div class="section-title">① 乗用車 と 貨物車（いちばん基本）</div>
+    <div class="body-text">クルマは「<b>何を運ぶのが主役か</b>」で大きく2つに分かれます。</div>
+    <div class="compare">
+      <div class="cmp-card">
+        <div class="cc-icon">🚙</div>
+        <div class="cc-title">乗用車</div>
+        <ul>
+          <li>主役は <b>人</b>（人を運ぶ車）</li>
+          <li>座席が中心・トランク</li>
+          <li>例：プリウス・N-BOX・アルファード</li>
+          <li>ナンバー 3・5・7</li>
+        </ul>
+      </div>
+      <div class="cmp-card alt">
+        <div class="cc-icon">🚚</div>
+        <div class="cc-title">貨物車（商用車）</div>
+        <ul>
+          <li>主役は <b>荷物</b>（荷物を運ぶ車）</li>
+          <li>広い荷台・荷室がある</li>
+          <li>例：ハイエース・トラック・軽トラ</li>
+          <li>ナンバー 1・4</li>
+        </ul>
+      </div>
+    </div>
+    <div class="analogy">
+      ざっくり言うと──<b>「人がメインの座席だらけの車」が乗用車</b>、<b>「荷物を積む広い荷台がある車」が貨物車</b>。
+      ハイエースは見た目が大きいワゴンでも、荷室が広い貨物（4ナンバー・1ナンバー）の場合があります。
+    </div>
+    <div class="info-box gold">
+      <span class="ib-head">なぜ大事？</span>
+      乗用車と貨物車では <b>車検の期間も税金も保険料も全部ちがう</b> からです。
+      最初に「これは乗用？貨物？」を見分けるクセをつけましょう。
+    </div>
+
+    <div class="section-title">② 大きさの区分（普通 / 小型 / 軽）</div>
+    <div class="body-text">同じ乗用車でも、<b>サイズと排気量</b>で3つに分かれます。</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>区分</th><th>大きさ・排気量の目安</th><th>ナンバー例</th></tr>
+      <tr><td>普通自動車</td><td>小型の枠を超える大きい車</td><td>3（乗用）/ 1（貨物）</td></tr>
+      <tr><td>小型自動車</td><td>長4.7m・幅1.7m・高2.0m・2,000cc 以下を<b>すべて</b>満たす</td><td>5（乗用）/ 4（貨物）</td></tr>
+      <tr><td>軽自動車</td><td>長3.4m・幅1.48m・高2.0m・<b>660cc</b> 以下</td><td>黄色ナンバー</td></tr>
+    </table>
+    </div>
+    <div class="info-box">
+      <span class="ib-head">「大型」とは？</span>
+      料金表に出てくる「<b>大型乗用〜2t</b>」などは <b>車の重さ</b> でのグループ分けです。
+      いっぽうトラック・バスの世界で言う「大型車」は、<b>車両総重量や定員が大きい車</b>（運転に大型免許が必要）のことを指します。場面で意味が変わるので注意。
+    </div>
+    <div class="analogy">
+      サイズ判定は <b>「長さ・幅・高さ・排気量の4つ全部が枠内なら小型」</b>。
+      1つでもオーバーしたら普通車（3ナンバー）になります。背の高いミニバンが3ナンバーなのは、幅か排気量が小型枠を超えているからです。
+    </div>
+
+    <div class="section-title">③ ナンバープレートの分類番号</div>
+    <div class="body-text">ナンバープレート上段の <b>数字（分類番号）の先頭1ケタ</b> を見れば、用途がすぐ分かります。</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>番号</th><th>用途</th><th>イメージ</th></tr>
+      <tr><td><b>1</b> ナンバー</td><td>普通貨物</td><td>大きいトラック</td></tr>
+      <tr><td><b>2</b> ナンバー</td><td>普通乗合（バス）</td><td>11人以上のバス</td></tr>
+      <tr><td><b>3</b> ナンバー</td><td>普通乗用</td><td>大きい乗用車</td></tr>
+      <tr><td><b>4</b> ナンバー</td><td>小型貨物</td><td>小さいトラック・バン</td></tr>
+      <tr><td><b>5</b> ナンバー</td><td>小型乗用</td><td>ふつうの小さい乗用車</td></tr>
+      <tr><td><b>8</b> ナンバー</td><td>特種用途</td><td>キャンピングカー・救急車</td></tr>
+    </table>
+    </div>
+    <div class="info-box gold">
+      <span class="ib-head">覚え方</span>
+      <b>奇数（3・5）＝人を乗せる乗用</b>、<b>1・4＝荷物の貨物</b>。
+      「<b>4ナンバー</b>」と聞いたら「あ、小さい貨物だな」とすぐ反応できればOKです。
+    </div>
+
+    <div class="section-title">④ 自家用 と 事業用</div>
+    <div class="body-text">同じ車でも <b>「お金をもらって人や荷物を運ぶ仕事に使うか」</b> で分かれます。ナンバープレートの色で見分けます。</div>
+    <div class="compare">
+      <div class="cmp-card">
+        <div class="cc-icon">⬜</div>
+        <div class="cc-title">自家用</div>
+        <ul>
+          <li>自分や会社が使う車</li>
+          <li>白ナンバー（軽は黄色）</li>
+          <li>大半のお客様の車はこちら</li>
+        </ul>
+      </div>
+      <div class="cmp-card alt">
+        <div class="cc-icon">🟩</div>
+        <div class="cc-title">事業用（営業用）</div>
+        <ul>
+          <li>運ぶ仕事そのものでお金をもらう</li>
+          <li>緑ナンバー（軽は黒）</li>
+          <li>タクシー・運送トラック・バス</li>
+        </ul>
+      </div>
+    </div>
+    <div class="info-box">
+      <span class="ib-head">なぜ大事？</span>
+      事業用は走る距離が長く事故リスクも違うため、<b>税金も保険料も自家用と別の金額</b>になります。
+      緑ナンバーを見たら「あ、事業用だ」と気づけるようにしましょう。
+    </div>
+
+    <div class="quiz-cta" onclick="startQuiz('shumoku')">
+      <div class="qc-label">理解度チェック</div>
+      <div class="qc-title">→ 車種区分クイズに挑戦</div>
+      <div class="qc-sub">全5問・〇×と選択式</div>
+    </div>
+  </div>
+
+  <!-- ==================== LESSON 2: 税金 ==================== -->
+  <div class="screen" id="screen-zeikin">
+    <div class="lesson-intro">
+      クルマには <b>いくつもの税金</b> がかかります。
+      「いつ・何に対して・誰に払う税金か」を整理して覚えましょう。
+      ここが分かると、車検料金の「<b>課税・非課税</b>」の意味もスッキリします。
+    </div>
+
+    <div class="section-title">① 車にかかる主な税金（4つ）</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>税金の名前</th><th>いつ払う</th><th>何で決まる</th></tr>
+      <tr><td>自動車税（種別割）</td><td>毎年（4/1の所有者）</td><td>排気量（軽は定額）</td></tr>
+      <tr><td>自動車重量税</td><td>車検のとき まとめて</td><td>車の重さ・経過年数</td></tr>
+      <tr><td>環境性能割</td><td>買うとき（取得時）</td><td>燃費性能</td></tr>
+      <tr><td>消費税</td><td>買う・整備するたび</td><td>車両・部品・工賃の金額</td></tr>
+    </table>
+    </div>
+
+    <div class="section-title">② それぞれを かんたんに</div>
+    <div class="info-box green">
+      <span class="ib-head">🅰 自動車税（種別割）</span>
+      <b>毎年4月1日時点の持ち主</b>に届く税金。エンジンの大きさ（排気量）が大きいほど高い。軽自動車は「軽自動車税」で定額（自家用乗用で年10,800円）。
+    </div>
+    <div class="info-box green">
+      <span class="ib-head">🅱 自動車重量税</span>
+      <b>車検のときに2年分（貨物は1年分）をまとめて</b>納める。車が重いほど高く、13年・18年と古くなると増える。エコカーは割引・免税。
+    </div>
+    <div class="info-box green">
+      <span class="ib-head">🅲 環境性能割</span>
+      <b>車を買ったとき</b>にかかる。燃費が良い車ほど安く（電気自動車などは0円）、燃費が悪い車ほど高い。
+    </div>
+    <div class="info-box green">
+      <span class="ib-head">🅳 消費税</span>
+      車両本体・<b>部品代・整備の工賃</b>などにかかる、いつもの10%。お店のサービスにかかる税金です。
+    </div>
+
+    <div class="section-title">③ 消費税が「かかる／かからない」</div>
+    <div class="body-text">ここが新人さんのつまずきポイント。<b>税金や強制保険には、消費税はかかりません。</b></div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>項目</th><th>消費税</th></tr>
+      <tr><td>整備の工賃・基本点検料</td><td class="taxed">かかる（課税）</td></tr>
+      <tr><td>部品代・オイル代</td><td class="taxed">かかる（課税）</td></tr>
+      <tr><td>自動車重量税</td><td class="free">かからない（非課税）</td></tr>
+      <tr><td>自賠責保険料</td><td class="free">かからない（非課税）</td></tr>
+      <tr><td>印紙代・登録の手数料</td><td class="free">かからない（非課税）</td></tr>
+    </table>
+    </div>
+    <div class="analogy">
+      考え方は <b>「税金や強制保険に、さらに消費税をかけたら二重取りになる」</b>から。
+      だから <b>国に納めるお金（重量税・印紙）や自賠責は非課税</b>。
+      いっぽう <b>お店が提供するサービス（工賃・部品）には消費税がかかる</b>。これが車検料金表の「課税諸費用／非課税諸費用」の正体です。
+    </div>
+    <div class="info-box gold">
+      <span class="ib-head">テーマ3につながります</span>
+      この「課税／非課税」の考え方が、次の <b>車検料金の内訳</b> でそのまま出てきます。
+    </div>
+
+    <div class="quiz-cta" onclick="startQuiz('zeikin')">
+      <div class="qc-label">理解度チェック</div>
+      <div class="qc-title">→ 税金クイズに挑戦</div>
+      <div class="qc-sub">全5問・〇×と選択式</div>
+    </div>
+  </div>
+
+  <!-- ==================== LESSON 3: 車検 ==================== -->
+  <div class="screen" id="screen-shaken">
+    <div class="lesson-intro">
+      車検（しゃけん）は <b>「車が安全に走れる状態かを国がチェックする検査」</b>。
+      これに通らないと公道を走れません。受付で必ず聞かれるのが「<b>次の車検はいつ？</b>」。期間と料金の中身を覚えましょう。
+    </div>
+
+    <div class="section-title">① 車検は何年ごと？</div>
+    <div class="body-text">車検の期間は <b>車種区分（テーマ1）で決まります</b>。これが区分を覚える理由です。</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>車の種類</th><th>新車の初回</th><th>2回目以降</th></tr>
+      <tr><td>自家用 乗用車（3・5ナンバー / 軽乗用）</td><td class="tot">3年</td><td class="tot">2年ごと</td></tr>
+      <tr><td>小型貨物（4ナンバー）</td><td>2年</td><td class="tot">1年ごと</td></tr>
+      <tr><td>普通貨物（1ナンバー）</td><td>2年 ※</td><td class="tot">1年ごと</td></tr>
+      <tr><td>バス・タクシー等（事業用）</td><td>1年</td><td class="tot">1年ごと</td></tr>
+    </table>
+    </div>
+    <div class="info-box gold">
+      <span class="ib-head">いちばん多いパターン</span>
+      お客様の多くは <b>自家用の乗用車＝「新車は3年、あとは2年ごと」</b>。まずこれを体に入れましょう。
+      <b>荷物を運ぶ貨物（4・1ナンバー）は毎年車検</b>、と覚えるとセットで頭に入ります。
+    </div>
+    <div class="analogy">
+      なぜ貨物は毎年？ <b>荷物を積んで酷使される＝傷みやすいから、こまめに点検</b>。
+      人を乗せる乗用車より、働く車のほうが検査の回数が多い、とイメージすると忘れません。
+    </div>
+
+    <div class="section-title">② 車検料金は「2つの部分」でできている</div>
+    <div class="body-text">車検の総額は、大きく <b>「法定費用」＋「整備費用」</b> に分かれます。</div>
+    <div class="compare">
+      <div class="cmp-card alt">
+        <div class="cc-icon">🏛️</div>
+        <div class="cc-title">法定費用（非課税）</div>
+        <ul>
+          <li>国などに必ず納めるお金</li>
+          <li>自動車重量税</li>
+          <li>自賠責保険料</li>
+          <li>印紙代（検査・登録）</li>
+          <li>どの店でも金額は同じ</li>
+        </ul>
+      </div>
+      <div class="cmp-card">
+        <div class="cc-icon">🔧</div>
+        <div class="cc-title">整備費用（課税）</div>
+        <ul>
+          <li>お店のサービス料</li>
+          <li>基本点検料（技術料）</li>
+          <li>検査・代行手数料</li>
+          <li>交換した部品代・工賃</li>
+          <li>店によって差が出る</li>
+        </ul>
+      </div>
+    </div>
+    <div class="info-box">
+      <span class="ib-head">料金表とのつながり</span>
+      料金メニュー表の <b>「課税諸費用」＝整備（お店）側</b>、<b>「非課税諸費用」＝法定費用（国に払う分）</b>です。
+      テーマ2で学んだ「税金・自賠責は非課税」がそのまま効いています。
+    </div>
+
+    <div class="section-title">③ 自家用乗用車（スピードコース）の総額の例</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>車両区分</th><th>基本点検料</th><th>課税諸費用</th><th>非課税諸費用</th><th>総額目安</th></tr>
+      <tr><td>軽自動車</td><td>19,580円</td><td>12,100円</td><td>26,240円</td><td class="tot">57,920円</td></tr>
+      <tr><td>小型乗用〜1t</td><td>21,780円</td><td>12,100円</td><td>36,150円</td><td class="tot">70,030円</td></tr>
+      <tr><td>中型乗用〜1.5t</td><td>22,880円</td><td>12,100円</td><td>44,350円</td><td class="tot">79,330円</td></tr>
+      <tr><td>大型乗用〜2t</td><td>25,080円</td><td>12,100円</td><td>52,550円</td><td class="tot">89,730円</td></tr>
+    </table>
+    </div>
+    <div class="info-box gold">
+      <span class="ib-head">なぜ車が大きいと高い？</span>
+      <b>重い車ほど重量税（非課税）が上がる</b>からです。基本点検料も少し上がりますが、総額の差の多くは <b>重量税の差</b>。
+      「大きい車＝重量税が高い＝車検も高い」とつながります。
+    </div>
+
+    <div class="quiz-cta" onclick="startQuiz('shaken')">
+      <div class="qc-label">理解度チェック</div>
+      <div class="qc-title">→ 車検クイズに挑戦</div>
+      <div class="qc-sub">全5問・〇×と選択式</div>
+    </div>
+  </div>
+
+  <!-- ==================== LESSON 4: 保険 ==================== -->
+  <div class="screen" id="screen-hoken">
+    <div class="lesson-intro">
+      クルマの保険は <b>2種類</b>。
+      ひとつは <b>全員が必ず入る「自賠責（じばいせき）」</b>、もうひとつは <b>自分の意思で入る「任意保険」</b>。
+      この2つの役割の違いを覚えましょう。
+    </div>
+
+    <div class="section-title">① 自賠責保険 と 任意保険</div>
+    <div class="compare">
+      <div class="cmp-card alt">
+        <div class="cc-icon">🛡️</div>
+        <div class="cc-title">自賠責保険（強制）</div>
+        <ul>
+          <li>すべての車が <b>加入義務</b></li>
+          <li>入っていないと公道を走れない</li>
+          <li>守るのは <b>相手のケガ・命だけ</b>（対人）</li>
+          <li>最低限の被害者救済</li>
+          <li><b>車検のときにまとめて加入</b></li>
+        </ul>
+      </div>
+      <div class="cmp-card">
+        <div class="cc-icon">➕</div>
+        <div class="cc-title">任意保険（自由）</div>
+        <ul>
+          <li>入るかどうかは <b>自由</b></li>
+          <li>自賠責の <b>上乗せ・足りない分</b></li>
+          <li>相手の <b>物</b>（対物）も補償</li>
+          <li>自分のケガ・自分の車も補償</li>
+          <li>各保険会社の商品</li>
+        </ul>
+      </div>
+    </div>
+    <div class="analogy">
+      <b>自賠責は「最低限の救急セット」</b>──相手のケガだけは必ず守る義務の保険。
+      でも相手の車の修理代や自分の車は対象外。そこを <b>任意保険という「しっかりした保険」で上乗せ</b>して備える、という関係です。
+    </div>
+
+    <div class="section-title">② 自賠責は車検とセット</div>
+    <div class="info-box green">
+      自賠責の期間は <b>車検の期間に合わせて</b>加入します（乗用車なら24ヶ月など）。
+      だから料金表でも、自賠責保険料は <b>車検の「非課税諸費用（法定費用）」</b>の中に入っています（テーマ2・3とつながる）。
+    </div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>車両区分</th><th>自賠責24ヶ月の例</th></tr>
+      <tr><td>軽自動車</td><td>17,540円</td></tr>
+      <tr><td>小型・普通乗用車</td><td>17,650円</td></tr>
+    </table>
+    </div>
+
+    <div class="section-title">③ 自家用 と 事業用 で保険料が変わる</div>
+    <div class="body-text">テーマ1で出た <b>自家用（白）・事業用（緑）</b> の区分は、保険でも使われます。
+    走る量やリスクが違うため、<b>同じ車でも保険料が変わります</b>。</div>
+    <div class="info-box">
+      <span class="ib-head">受付でのポイント</span>
+      お客様の車が <b>「自家用か事業用か」「乗用か貨物か」</b> が分かると、自賠責の金額もすぐ案内できます。
+      やっぱり最後は <b>テーマ1の「区分」</b> に戻ってくる、というわけです。
+    </div>
+
+    <div class="quiz-cta" onclick="startQuiz('hoken')">
+      <div class="qc-label">理解度チェック</div>
+      <div class="qc-title">→ 保険クイズに挑戦</div>
+      <div class="qc-sub">全5問・〇×と選択式</div>
+    </div>
+  </div>
+
+  <!-- ==================== QUIZ MENU ==================== -->
+  <div class="screen" id="screen-quiz-menu">
+    <div class="lesson-intro">
+      覚えたか、クイズで力だめし。間違えても <b>解説が出る</b> ので、何度でも挑戦してOK。
+    </div>
+    <div class="qmenu-card" onclick="startQuiz('shumoku')">
+      <div class="icon">🚗</div>
+      <div class="qm-body">
+        <div class="qm-title">車種区分クイズ</div>
+        <div class="qm-sub">乗用・貨物／大きさ／ナンバー／自家用・事業用</div>
+        <div class="qm-best" id="best-shumoku"></div>
+      </div>
+      <div class="arrow">›</div>
+    </div>
+    <div class="qmenu-card" onclick="startQuiz('zeikin')">
+      <div class="icon">💰</div>
+      <div class="qm-body">
+        <div class="qm-title">税金クイズ</div>
+        <div class="qm-sub">自動車税／重量税／環境性能割／課税・非課税</div>
+        <div class="qm-best" id="best-zeikin"></div>
+      </div>
+      <div class="arrow">›</div>
+    </div>
+    <div class="qmenu-card" onclick="startQuiz('shaken')">
+      <div class="icon">🔍</div>
+      <div class="qm-body">
+        <div class="qm-title">車検クイズ</div>
+        <div class="qm-sub">期間／法定費用と整備費用</div>
+        <div class="qm-best" id="best-shaken"></div>
+      </div>
+      <div class="arrow">›</div>
+    </div>
+    <div class="qmenu-card" onclick="startQuiz('hoken')">
+      <div class="icon">🛡️</div>
+      <div class="qm-body">
+        <div class="qm-title">保険クイズ</div>
+        <div class="qm-sub">自賠責と任意／自家用・事業用</div>
+        <div class="qm-best" id="best-hoken"></div>
+      </div>
+      <div class="arrow">›</div>
+    </div>
+  </div>
+
+  <!-- ==================== QUIZ RUNNER ==================== -->
+  <div class="screen" id="screen-quiz">
+    <div class="quiz-progress" id="quiz-progress"></div>
+    <div class="quiz-bar-bg"><div class="quiz-bar-fill" id="quiz-bar"></div></div>
+    <div id="quiz-body"></div>
+  </div>
+
+  <!-- ==================== QUIZ RESULT ==================== -->
+  <div class="screen" id="screen-result">
+    <div class="result-card">
+      <div class="r-emoji" id="r-emoji">🎉</div>
+      <div class="r-score">あなたの正解数</div>
+      <div class="r-num"><span id="r-num">0</span><small> / <span id="r-total">5</span></small></div>
+      <div class="r-msg" id="r-msg"></div>
+      <div class="result-btns">
+        <button class="btn-retry" id="btn-retry">もう一度</button>
+        <button class="btn-home" onclick="showHome()">ホームへ</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end #main-content -->
+
+<!-- BOTTOM NAV -->
+<nav id="bottom-nav">
+  <button class="nav-tab active-tab" id="nav-home" onclick="showHome()">
+    <span class="n-icon">🏠</span><span class="n-label">ホーム</span>
+  </button>
+  <button class="nav-tab" id="nav-shumoku" onclick="showLesson('shumoku')">
+    <span class="n-icon">🚗</span><span class="n-label">車種</span>
+  </button>
+  <button class="nav-tab" id="nav-zeikin" onclick="showLesson('zeikin')">
+    <span class="n-icon">💰</span><span class="n-label">税金</span>
+  </button>
+  <button class="nav-tab" id="nav-shaken" onclick="showLesson('shaken')">
+    <span class="n-icon">🔍</span><span class="n-label">車検</span>
+  </button>
+  <button class="nav-tab" id="nav-hoken" onclick="showLesson('hoken')">
+    <span class="n-icon">🛡️</span><span class="n-label">保険</span>
+  </button>
+  <button class="nav-tab" id="nav-quiz" onclick="showQuizMenu()">
+    <span class="n-icon">✏️</span><span class="n-label">クイズ</span>
+  </button>
+</nav>
+
+<script>
+// ==================== メタ情報 ====================
+const LESSONS = {
+  shumoku: { title: '車種区分の基礎', nav: 'shumoku' },
+  zeikin:  { title: '車にかかる税金', nav: 'zeikin' },
+  shaken:  { title: '車検のしくみ',   nav: 'shaken' },
+  hoken:   { title: '自動車保険の基礎', nav: 'hoken' },
+};
+
+// ==================== クイズデータ ====================
+const QUIZZES = {
+  shumoku: {
+    title: '車種区分クイズ',
+    questions: [
+      { type: 'ox', q: '「主に人を運ぶ車」を乗用車という。', answer: true,
+        explain: '正解は〇。人がメインなら乗用車、荷物がメインなら貨物車です。' },
+      { type: 'mc', q: '3ナンバーの車はどれ？', choices: ['普通乗用車', '小型貨物', 'バス'], answer: 0,
+        explain: '3ナンバー＝普通乗用車。奇数（3・5）は人を乗せる乗用、と覚えましょう。' },
+      { type: 'mc', q: '「4ナンバー」はどんな車？', choices: ['小型乗用', '小型貨物', '特種用途'], answer: 1,
+        explain: '4ナンバー＝小型貨物。小さいトラック・バンです。' },
+      { type: 'mc', q: '軽自動車の排気量の上限は？', choices: ['660cc', '1,000cc', '2,000cc'], answer: 0,
+        explain: '軽は660cc以下。サイズも長3.4m・幅1.48m・高2.0m以下です。' },
+      { type: 'ox', q: '緑ナンバーの車は「事業用（営業用）」である。', answer: true,
+        explain: '正解は〇。緑（軽は黒）＝事業用。タクシーや運送トラックなどです。' },
+    ],
+  },
+  zeikin: {
+    title: '税金クイズ',
+    questions: [
+      { type: 'mc', q: '毎年4月1日時点の持ち主にかかる税金は？', choices: ['自動車税（種別割）', '重量税', '環境性能割'], answer: 0,
+        explain: '自動車税（種別割）。毎年かかり、排気量が大きいほど高くなります。' },
+      { type: 'mc', q: '車検のときにまとめて納め、車の重さで決まる税金は？', choices: ['消費税', '自動車重量税', '自動車税'], answer: 1,
+        explain: '自動車重量税。重い車・古い車ほど高く、車検時にまとめて払います。' },
+      { type: 'ox', q: '自動車重量税や自賠責保険料には、消費税がかかる。', answer: false,
+        explain: '正解は×。税金や強制保険は非課税。消費税はかかりません。' },
+      { type: 'ox', q: '整備の工賃や部品代には、消費税がかかる。', answer: true,
+        explain: '正解は〇。お店のサービス（工賃・部品）は課税です。' },
+      { type: 'mc', q: '車を買うときに、燃費性能で金額が決まる税金は？', choices: ['重量税', '環境性能割', '自動車税'], answer: 1,
+        explain: '環境性能割。燃費が良い車ほど安く、電気自動車などは0円です。' },
+    ],
+  },
+  shaken: {
+    title: '車検クイズ',
+    questions: [
+      { type: 'mc', q: '自家用の乗用車（新車）の、初回の車検は何年後？', choices: ['1年後', '2年後', '3年後'], answer: 2,
+        explain: '新車の乗用車は初回3年。その後は2年ごとです。' },
+      { type: 'mc', q: '自家用乗用車の2回目以降の車検は何年ごと？', choices: ['1年ごと', '2年ごと', '3年ごと'], answer: 1,
+        explain: '2回目以降は2年ごと。「新車3年、あとは2年」とセットで覚えましょう。' },
+      { type: 'ox', q: '4ナンバー（小型貨物）の車検は毎年（1年ごと）である。', answer: true,
+        explain: '正解は〇。荷物を運ぶ貨物は傷みやすいので毎年車検です。' },
+      { type: 'mc', q: '車検料金のうち「非課税（法定費用）」はどれ？', choices: ['基本点検料', '部品代', '自賠責・重量税・印紙'], answer: 2,
+        explain: '自賠責・重量税・印紙が法定費用＝非課税。基本点検料や部品代はお店のサービスで課税です。' },
+      { type: 'ox', q: '大きくて重い車ほど、車検は高くなりやすい。', answer: true,
+        explain: '正解は〇。重い車ほど重量税が上がるので、総額も高くなります。' },
+    ],
+  },
+  hoken: {
+    title: '保険クイズ',
+    questions: [
+      { type: 'mc', q: 'すべての車が必ず入る「強制保険」は？', choices: ['任意保険', '自賠責保険', '車両保険'], answer: 1,
+        explain: '自賠責保険。入っていないと公道を走れません。' },
+      { type: 'mc', q: '自賠責保険が守るのは主にどれ？', choices: ['相手のケガ・命（対人）', '相手の車（対物）', '自分の車'], answer: 0,
+        explain: '自賠責は対人だけ。相手の車や自分の車は対象外です。' },
+      { type: 'mc', q: '相手の車（対物）や自分の車も補償したいときに入るのは？', choices: ['自賠責保険', '任意保険', '重量税'], answer: 1,
+        explain: '任意保険。自賠責の足りない部分を上乗せして備えます。' },
+      { type: 'ox', q: '自賠責保険は、車検のときにまとめて加入する。', answer: true,
+        explain: '正解は〇。だから料金表でも車検の「非課税（法定費用）」に入っています。' },
+      { type: 'ox', q: '自家用と事業用では、保険料が変わることがある。', answer: true,
+        explain: '正解は〇。走る量やリスクが違うため、同じ車でも保険料が変わります。' },
+    ],
+  },
+};
+
+// ==================== 状態 ====================
+let navStack = [];
+let quizState = null; // { key, index, score, total }
+
+// ==================== 画面ヘルパー ====================
+function hideAllScreens() {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+}
+function showScreen(id) {
+  hideAllScreens();
+  const el = document.getElementById(id);
+  if (el) { el.classList.add('active'); document.getElementById('main-content').scrollTop = 0; }
+}
+function updateNavTabs(key) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active-tab'));
+  const el = document.getElementById('nav-' + key);
+  if (el) el.classList.add('active-tab');
+}
+function setTitle(t) { document.getElementById('header-title').textContent = t; }
+function setBack(show) {
+  document.getElementById('btn-back').classList.toggle('visible', show);
+}
+
+// ==================== ナビ ====================
+function showHome() {
+  navStack = [];
+  showScreen('screen-home');
+  setTitle('車屋のいろは');
+  setBack(false);
+  updateNavTabs('home');
+  renderBreadcrumb();
+  refreshProgress();
+}
+function showLesson(key) {
+  const l = LESSONS[key];
+  navStack = [{ id: 'screen-' + key, title: l.title, nav: l.nav, type: 'lesson', key }];
+  showScreen('screen-' + key);
+  setTitle(l.title);
+  setBack(true);
+  updateNavTabs(l.nav);
+  renderBreadcrumb();
+}
+function showQuizMenu() {
+  navStack = [{ id: 'screen-quiz-menu', title: 'クイズ', nav: 'quiz', type: 'qmenu' }];
+  showScreen('screen-quiz-menu');
+  setTitle('クイズで力だめし');
+  setBack(true);
+  updateNavTabs('quiz');
+  renderBreadcrumb();
+  refreshBestScores();
+}
+function goBack() {
+  // クイズ中・結果からはホームへ
+  const cur = navStack[navStack.length - 1];
+  if (!cur || cur.type === 'quiz' || cur.type === 'result') { showHome(); return; }
+  if (navStack.length <= 1) { showHome(); return; }
+  navStack.pop();
+  const prev = navStack[navStack.length - 1];
+  showScreen(prev.id);
+  setTitle(prev.title);
+  updateNavTabs(prev.nav);
+  renderBreadcrumb();
+}
+
+// ==================== パンくず ====================
+function renderBreadcrumb() {
+  const bc = document.getElementById('breadcrumb');
+  if (navStack.length === 0) { bc.innerHTML = '<span class="bc-cur">ホーム</span>'; return; }
+  let html = '<span class="bc-item" onclick="showHome()">ホーム</span>';
+  navStack.forEach((item, i) => {
+    html += '<span class="bc-sep">›</span>';
+    if (i === navStack.length - 1) html += '<span class="bc-cur">' + item.title + '</span>';
+    else html += '<span class="bc-cur">' + item.title + '</span>';
+  });
+  bc.innerHTML = html;
+}
+
+// ==================== クイズ ====================
+function startQuiz(key) {
+  quizState = { key, index: 0, score: 0, total: QUIZZES[key].questions.length };
+  navStack = [{ id: 'screen-quiz', title: QUIZZES[key].title, nav: 'quiz', type: 'quiz', key }];
+  setTitle(QUIZZES[key].title);
+  setBack(true);
+  updateNavTabs('quiz');
+  showScreen('screen-quiz');
+  renderBreadcrumb();
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const { key, index, total } = quizState;
+  const quiz = QUIZZES[key];
+  const q = quiz.questions[index];
+  document.getElementById('quiz-progress').textContent = '第 ' + (index + 1) + ' 問 / 全 ' + total + ' 問';
+  document.getElementById('quiz-bar').style.width = (index / total * 100) + '%';
+
+  const body = document.getElementById('quiz-body');
+  let html = '<div class="quiz-q"><span class="q-tag">' + (q.type === 'ox' ? '〇×問題' : '選んでね') + '</span><br>' + q.q + '</div>';
+
+  if (q.type === 'ox') {
+    html += '<div class="ox-choices">' +
+      '<button class="ox-btn" id="ox-true" onclick="answerOX(true)">〇<span class="ox-label">正しい</span></button>' +
+      '<button class="ox-btn" id="ox-false" onclick="answerOX(false)">×<span class="ox-label">ちがう</span></button>' +
+      '</div>';
+  } else {
+    html += '<div class="choices">';
+    q.choices.forEach((c, i) => {
+      html += '<button class="choice" id="ch-' + i + '" onclick="answerMC(' + i + ')"><span class="c-mark">' + (i + 1) + '.</span>' + c + '</button>';
+    });
+    html += '</div>';
+  }
+  html += '<div class="feedback" id="feedback"><span class="fb-head" id="fb-head"></span><span class="fb-exp" id="fb-exp"></span></div>';
+  html += '<button class="btn-next" id="btn-next" onclick="nextQuestion()">次へ →</button>';
+  body.innerHTML = html;
+}
+
+function lockChoices() {
+  document.querySelectorAll('#quiz-body .choice, #quiz-body .ox-btn').forEach(el => el.classList.add('disabled'));
+}
+function showFeedback(correct, explain) {
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback show ' + (correct ? 'ok' : 'ng');
+  document.getElementById('fb-head').textContent = correct ? '⭕ 正解！' : '❌ 残念…';
+  document.getElementById('fb-exp').textContent = explain;
+  document.getElementById('btn-next').classList.add('show');
+  const nextBtn = document.getElementById('btn-next');
+  if (quizState.index === quizState.total - 1) nextBtn.textContent = '結果を見る →';
+}
+
+function answerMC(choice) {
+  const q = QUIZZES[quizState.key].questions[quizState.index];
+  const correct = choice === q.answer;
+  if (correct) quizState.score++;
+  document.getElementById('ch-' + q.answer).classList.add('correct');
+  if (!correct) document.getElementById('ch-' + choice).classList.add('wrong');
+  lockChoices();
+  showFeedback(correct, q.explain);
+}
+function answerOX(val) {
+  const q = QUIZZES[quizState.key].questions[quizState.index];
+  const correct = val === q.answer;
+  if (correct) quizState.score++;
+  document.getElementById(q.answer ? 'ox-true' : 'ox-false').classList.add('correct');
+  if (!correct) document.getElementById(val ? 'ox-true' : 'ox-false').classList.add('wrong');
+  lockChoices();
+  showFeedback(correct, q.explain);
+}
+
+function nextQuestion() {
+  quizState.index++;
+  if (quizState.index >= quizState.total) showResult();
+  else renderQuestion();
+}
+
+function showResult() {
+  const { key, score, total } = quizState;
+  saveBest(key, score);
+  navStack = [{ id: 'screen-result', title: '結果', nav: 'quiz', type: 'result', key }];
+  showScreen('screen-result');
+  setTitle('クイズ結果');
+  setBack(true);
+  updateNavTabs('quiz');
+  renderBreadcrumb();
+  document.getElementById('quiz-bar').style.width = '100%';
+
+  document.getElementById('r-num').textContent = score;
+  document.getElementById('r-total').textContent = total;
+  const ratio = score / total;
+  let emoji, msg;
+  if (ratio === 1) { emoji = '🏆'; msg = 'パーフェクト！完璧です。受付でも自信を持って案内できますね。'; }
+  else if (ratio >= 0.8) { emoji = '🎉'; msg = 'よくできました！あと少しで満点。解説をもう一度読んでみましょう。'; }
+  else if (ratio >= 0.6) { emoji = '👍'; msg = 'いい調子。間違えたところはレッスンに戻って復習しましょう。'; }
+  else { emoji = '📖'; msg = 'もう一度レッスンを読んでから挑戦してみましょう。くり返せば必ず覚えられます。'; }
+  document.getElementById('r-emoji').textContent = emoji;
+  document.getElementById('r-msg').textContent = msg;
+  document.getElementById('btn-retry').onclick = () => startQuiz(key);
+}
+
+// ==================== ベストスコア（localStorage） ====================
+function saveBest(key, score) {
+  try {
+    const cur = parseInt(localStorage.getItem('iroha_best_' + key) || '0', 10);
+    if (score > cur) localStorage.setItem('iroha_best_' + key, String(score));
+    localStorage.setItem('iroha_done_' + key, '1');
+  } catch (e) {}
+}
+function refreshBestScores() {
+  Object.keys(QUIZZES).forEach(key => {
+    const el = document.getElementById('best-' + key);
+    if (!el) return;
+    let best = 0;
+    try { best = parseInt(localStorage.getItem('iroha_best_' + key) || '0', 10); } catch (e) {}
+    const total = QUIZZES[key].questions.length;
+    el.textContent = best > 0 ? '最高記録 ' + best + ' / ' + total + (best === total ? ' 🏆' : '') : '';
+  });
+}
+function refreshProgress() {
+  ['shumoku', 'zeikin', 'shaken', 'hoken'].forEach(key => {
+    const el = document.getElementById('done-' + key);
+    if (!el) return;
+    let done = false;
+    try { done = localStorage.getItem('iroha_done_' + key) === '1'; } catch (e) {}
+    el.textContent = done ? '✓ クイズ挑戦ずみ' : '';
+  });
+}
+
+// ==================== 初期化 ====================
+document.querySelectorAll('table').forEach(function (t) {
+  if (t.closest('.table-wrap')) return;
+  var wrap = document.createElement('div');
+  wrap.className = 'table-wrap';
+  t.parentNode.insertBefore(wrap, t);
+  wrap.appendChild(t);
+});
+showHome();
+</script>
+</body>
+</html>
