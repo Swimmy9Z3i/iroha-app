@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "site": "lotas-iroha",
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*"
+    ]
+  }
+}
