@@ -333,18 +333,18 @@ tr:nth-child(even) td { background: #f7f9f7; }
   position: fixed; bottom: 0; left: 0; right: 0;
   height: var(--nav-h);
   background: #fff; border-top: 1px solid #ddd;
-  display: grid; grid-template-columns: repeat(6, 1fr);
+  display: grid; grid-template-columns: repeat(7, 1fr);
   z-index: 100;
 }
 .nav-tab {
   display: flex; flex-direction: column;
   align-items: center; justify-content: center; gap: 2px;
-  cursor: pointer; border: none; background: none; padding: 4px 2px;
+  cursor: pointer; border: none; background: none; padding: 4px 1px;
   transition: background 0.1s; font-family: inherit;
 }
 .nav-tab:active { background: #f0f0f0; }
-.nav-tab .n-icon { font-size: 22px; line-height: 1; }
-.nav-tab .n-label { font-size: 11px; color: #555; font-weight: 600; }
+.nav-tab .n-icon { font-size: 20px; line-height: 1; }
+.nav-tab .n-label { font-size: 10px; color: #555; font-weight: 600; }
 .nav-tab.active-tab .n-label { color: var(--green); }
 </style>
 </head>
@@ -413,6 +413,16 @@ tr:nth-child(even) td { background: #f7f9f7; }
           <div class="t-title">自動車保険の基礎</div>
           <div class="t-desc">自賠責（強制）と任意保険・何を守る保険か・自家用と事業用</div>
           <div class="t-done" id="done-hoken"></div>
+        </div>
+        <div class="arrow">›</div>
+      </div>
+      <div class="theme-card" onclick="showLesson('kozo')">
+        <div class="t-num">5</div>
+        <div class="icon">🔩</div>
+        <div class="t-body">
+          <div class="t-title">車の構造と仕組み</div>
+          <div class="t-desc">エンジンの種類・ミッション（AT/MT）・駆動方式・主な消耗品</div>
+          <div class="t-done" id="done-kozo"></div>
         </div>
         <div class="arrow">›</div>
       </div>
@@ -765,6 +775,132 @@ tr:nth-child(even) td { background: #f7f9f7; }
     </div>
   </div>
 
+  <!-- ==================== LESSON 5: 車の構造と仕組み ==================== -->
+  <div class="screen" id="screen-kozo">
+    <div class="lesson-intro">
+      クルマの整備の仕事では、<b>エンジンや足回りがどうなっているか</b>を知っておくと、
+      お客様への説明や部品の受け渡しがスムーズになります。
+      難しい専門知識は後でOK。まず <b>「名前と役割」</b> を覚えましょう。
+    </div>
+
+    <div class="section-title">① エンジンの種類</div>
+    <div class="body-text">クルマを動かす心臓部が <b>エンジン</b>。燃料の種類と特徴で4つに分かれます。</div>
+    <div class="compare">
+      <div class="cmp-card">
+        <div class="cc-icon">⛽</div>
+        <div class="cc-title">ガソリン</div>
+        <ul>
+          <li>最も一般的</li>
+          <li>レギュラー / ハイオク</li>
+          <li>乗用車の大半</li>
+        </ul>
+      </div>
+      <div class="cmp-card alt">
+        <div class="cc-icon">🛢️</div>
+        <div class="cc-title">ディーゼル</div>
+        <ul>
+          <li>燃料は<b>軽油</b></li>
+          <li>トラック・バス・一部SUV</li>
+          <li>燃費◎・トルク大</li>
+        </ul>
+      </div>
+    </div>
+    <div class="info-box green">
+      <span class="ib-head">🔋 ハイブリッド（HV）</span>
+      ガソリンエンジン＋電気モーターの組み合わせ。発進・低速は電気で走り静か。
+      プリウス・アクアなどが代表。給油は通常のガソリン。
+    </div>
+    <div class="info-box green">
+      <span class="ib-head">⚡ EV（電気自動車）</span>
+      エンジンなし・モーターだけで走る。充電が必要。日産リーフ・テスラなど。
+      排気ガスが出ないが、走行可能距離は充電残量次第。
+    </div>
+    <div class="analogy">
+      <b>「給油口に何を入れるか」</b>でエンジンの種類を見分けよう。
+      ガソリン→ガソリン車、軽油→ディーゼル車、充電ポート→EV。
+      <b>間違えて入れると重大な故障</b>になるので、受付のとき確認するクセをつけましょう。
+    </div>
+
+    <div class="section-title">② ミッション（変速機）の種類</div>
+    <div class="body-text">エンジンの力をタイヤに伝える装置が <b>ミッション（変速機）</b>。AT・MT・CVTの3種類が主流です。</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>種類</th><th>特徴</th><th>クラッチペダル</th></tr>
+      <tr><td><b>AT（オートマ）</b></td><td>自動で変速。アクセル・ブレーキの2ペダル</td><td class="free">なし</td></tr>
+      <tr><td><b>MT（マニュアル）</b></td><td>自分でクラッチを踏んで変速。3ペダル</td><td class="taxed">あり</td></tr>
+      <tr><td><b>CVT（無段変速）</b></td><td>ベルト式でなめらかに変速。軽・小型車に多い</td><td class="free">なし</td></tr>
+    </table>
+    </div>
+    <div class="info-box gold">
+      <span class="ib-head">受付での注意点</span>
+      「AT限定免許」のお客様はMT車を運転できません。
+      代車を手配するときは <b>「AT/MT どちらですか？」</b> の確認が必須です。
+    </div>
+
+    <div class="section-title">③ 駆動方式（FF・FR・4WD）</div>
+    <div class="body-text">エンジンの力が <b>どのタイヤに伝わるか</b> が「駆動方式」。</div>
+    <div class="compare">
+      <div class="cmp-card">
+        <div class="cc-icon">🚘</div>
+        <div class="cc-title">FF（前輪駆動）</div>
+        <ul>
+          <li>前輪で引っ張る</li>
+          <li>コンパクトカーに多い</li>
+          <li>室内空間が広い・燃費◎</li>
+        </ul>
+      </div>
+      <div class="cmp-card alt">
+        <div class="cc-icon">🏎️</div>
+        <div class="cc-title">FR（後輪駆動）</div>
+        <ul>
+          <li>後輪で押す</li>
+          <li>高級車・スポーツカー</li>
+          <li>前後バランスが良い</li>
+        </ul>
+      </div>
+    </div>
+    <div class="info-box green">
+      <span class="ib-head">🏔️ 4WD / AWD（四輪駆動）</span>
+      4つのタイヤ全部に力が伝わる。雪道・悪路に強い。
+      鹿児島では平地が多いが、山間部への配送や冬の霧島周辺では重宝されます。
+    </div>
+
+    <div class="section-title">④ 主な消耗品と点検ポイント</div>
+    <div class="body-text">整備店で日常的に交換するものを覚えましょう。</div>
+    <div class="info-box">
+      <span class="ib-head">🛢️ エンジンオイル</span>
+      エンジン内部の金属部品を<b>潤滑・冷却</b>する油。古くなると汚れてエンジンが傷む。
+      定期的な交換（3,000〜5,000km目安）が基本の整備メニュー。
+    </div>
+    <div class="info-box">
+      <span class="ib-head">🔴 ブレーキ関連</span>
+      <b>ディスクブレーキ → ブレーキパッド</b>（前輪に多い）<br>
+      <b>ドラムブレーキ → ブレーキシュー</b>（後輪に多い）<br>
+      磨り減ったら制動力が落ちて危険。厚さ確認が車検の必須項目。
+    </div>
+    <div class="info-box">
+      <span class="ib-head">🔋 バッテリー</span>
+      電気を蓄え、セルモーター（エンジン始動）・ライト・カーナビ等に電気を供給。
+      劣化するとエンジンがかからなくなる。2〜3年が交換の目安。
+    </div>
+    <div class="info-box">
+      <span class="ib-head">🔵 タイヤ</span>
+      溝の深さ（<b>スリップサイン</b>が出たら交換）と空気圧が重要。
+      空気圧が低いとタイヤが傷み・燃費も悪化。定期的な点検を。
+    </div>
+    <div class="analogy">
+      消耗品は <b>「車の消耗品＝人間の体の定期健診」</b> と同じ感覚。
+      オイル＝血液、バッテリー＝心臓、ブレーキ＝足腰、タイヤ＝靴底。
+      どれかサボると全体に影響が出ます。
+    </div>
+
+    <div class="quiz-cta" onclick="startQuiz('kozo')">
+      <div class="qc-label">理解度チェック</div>
+      <div class="qc-title">→ 構造・仕組みクイズに挑戦</div>
+      <div class="qc-sub">全5問・〇×と選択式</div>
+    </div>
+  </div>
+
   <!-- ==================== QUIZ MENU ==================== -->
   <div class="screen" id="screen-quiz-menu">
     <div class="lesson-intro">
@@ -803,6 +939,15 @@ tr:nth-child(even) td { background: #f7f9f7; }
         <div class="qm-title">保険クイズ</div>
         <div class="qm-sub">自賠責と任意／自家用・事業用</div>
         <div class="qm-best" id="best-hoken"></div>
+      </div>
+      <div class="arrow">›</div>
+    </div>
+    <div class="qmenu-card" onclick="startQuiz('kozo')">
+      <div class="icon">🔩</div>
+      <div class="qm-body">
+        <div class="qm-title">構造・仕組みクイズ</div>
+        <div class="qm-sub">エンジン種類／AT・MT／駆動方式／消耗品</div>
+        <div class="qm-best" id="best-kozo"></div>
       </div>
       <div class="arrow">›</div>
     </div>
@@ -848,6 +993,9 @@ tr:nth-child(even) td { background: #f7f9f7; }
   <button class="nav-tab" id="nav-hoken" onclick="showLesson('hoken')">
     <span class="n-icon">🛡️</span><span class="n-label">保険</span>
   </button>
+  <button class="nav-tab" id="nav-kozo" onclick="showLesson('kozo')">
+    <span class="n-icon">🔩</span><span class="n-label">構造</span>
+  </button>
   <button class="nav-tab" id="nav-quiz" onclick="showQuizMenu()">
     <span class="n-icon">✏️</span><span class="n-label">クイズ</span>
   </button>
@@ -860,6 +1008,7 @@ const LESSONS = {
   zeikin:  { title: '車にかかる税金', nav: 'zeikin' },
   shaken:  { title: '車検のしくみ',   nav: 'shaken' },
   hoken:   { title: '自動車保険の基礎', nav: 'hoken' },
+  kozo:    { title: '車の構造と仕組み', nav: 'kozo' },
 };
 
 // ==================== クイズデータ ====================
@@ -922,6 +1071,21 @@ const QUIZZES = {
         explain: '正解は〇。だから料金表でも車検の「非課税（法定費用）」に入っています。' },
       { type: 'ox', q: '自家用と事業用では、保険料が変わることがある。', answer: true,
         explain: '正解は〇。走る量やリスクが違うため、同じ車でも保険料が変わります。' },
+    ],
+  },
+  kozo: {
+    title: '構造・仕組みクイズ',
+    questions: [
+      { type: 'ox', q: 'ディーゼルエンジンの車には「軽油」を入れる。', answer: true,
+        explain: '正解は〇。ディーゼルは軽油。ガソリンを入れると重大な故障になるので、受付でも燃料の種類を確認する習慣をつけましょう。' },
+      { type: 'mc', q: 'MT（マニュアル）車にあって、AT車にないペダルは？', choices: ['アクセル', 'ブレーキ', 'クラッチ'], answer: 2,
+        explain: 'クラッチ。MT車は3ペダル（アクセル・ブレーキ・クラッチ）で、AT車は2ペダル。AT限定免許の方はクラッチ操作ができないので代車手配のとき要確認。' },
+      { type: 'ox', q: '「FF」とはフロントエンジン・フロントドライブの略で、前輪が駆動する方式だ。', answer: true,
+        explain: '正解は〇。FFは前輪駆動。コンパクトカーや軽自動車に多い。対してFRは後輪駆動で高級車・スポーツカーに多いです。' },
+      { type: 'mc', q: 'エンジンオイルの主な役割は？', choices: ['エンジン内部の潤滑・冷却', '燃料タンクに燃料を送り込む', '排気ガスをきれいにする'], answer: 0,
+        explain: 'エンジンオイルはエンジン内部の金属同士の摩擦を減らし（潤滑）、熱を逃がす（冷却）役割をします。定期交換が整備の基本です。' },
+      { type: 'mc', q: '「ブレーキパッド」が使われるブレーキの種類は？', choices: ['ドラムブレーキ', 'ディスクブレーキ', 'ABSブレーキ'], answer: 1,
+        explain: 'ブレーキパッドはディスクブレーキで使われる消耗品。ドラムブレーキで使われるのはブレーキシュー。前輪はディスク・後輪はドラムという構成の車が多いです。' },
     ],
   },
 };
@@ -1123,7 +1287,7 @@ function refreshBestScores() {
   });
 }
 function refreshProgress() {
-  ['shumoku', 'zeikin', 'shaken', 'hoken'].forEach(key => {
+  ['shumoku', 'zeikin', 'shaken', 'hoken', 'kozo'].forEach(key => {
     const el = document.getElementById('done-' + key);
     if (!el) return;
     let done = false;
