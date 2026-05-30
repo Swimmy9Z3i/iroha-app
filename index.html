@@ -346,6 +346,24 @@ tr:nth-child(even) td { background: #f7f9f7; }
 .nav-tab .n-icon { font-size: 20px; line-height: 1; }
 .nav-tab .n-label { font-size: 10px; color: #555; font-weight: 600; }
 .nav-tab.active-tab .n-label { color: var(--green); }
+
+/* LANG TOGGLE */
+.lang-vi { display: none; }
+body.vi .lang-ja { display: none !important; }
+body.vi .lang-vi { display: block !important; }
+
+/* LANG BUTTON */
+#btn-lang {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.65);
+  font-size: 11px; font-weight: 700;
+  padding: 5px 8px; border-radius: 8px;
+  cursor: pointer; flex-shrink: 0;
+  font-family: inherit; letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+#btn-lang .la { color: var(--gold); }
 </style>
 </head>
 <body>
@@ -354,6 +372,7 @@ tr:nth-child(even) td { background: #f7f9f7; }
 <header id="app-header">
   <button id="btn-back" onclick="goBack()" aria-label="戻る">&#8592;</button>
   <div id="header-title">車屋のいろは</div>
+  <button id="btn-lang" onclick="toggleLang()"><span class="la">JA</span>｜<span>VI</span></button>
 </header>
 
 <!-- BREADCRUMB -->
@@ -367,84 +386,180 @@ tr:nth-child(even) td { background: #f7f9f7; }
   <!-- ==================== HOME ==================== -->
   <div class="screen active" id="screen-home">
     <div class="home-logo">
-      <h2>車屋のいろは</h2>
-      <p>留盛自動車 新人スタッフ研修</p>
+      <h2 id="home-title">車屋のいろは</h2>
+      <p id="home-sub">留盛自動車 新人スタッフ研修</p>
     </div>
-    <div class="home-lead">
-      クルマ屋の仕事は、まず<b>「クルマの種類の見分け方」</b>から。
-      車検も、税金も、保険も、料金表も──ぜんぶ <b>「その車がどの区分か」</b> で決まります。
-      下のテーマを上から順に読んで、最後にクイズで力だめしをしましょう。
-    </div>
-    <div class="theme-list">
-      <div class="theme-card" onclick="showLesson('shumoku')">
-        <div class="t-num">1</div>
-        <div class="icon">🚗</div>
-        <div class="t-body">
-          <div class="t-title">車種区分の基礎</div>
-          <div class="t-desc">乗用車と貨物車・大きさ（普通/小型/軽）・ナンバーの数字・自家用と事業用</div>
-          <div class="t-done" id="done-shumoku"></div>
-        </div>
-        <div class="arrow">›</div>
+
+    <!-- HOME: 日本語 -->
+    <div class="lang-ja">
+      <div class="home-lead">
+        クルマ屋の仕事は、まず<b>「クルマの種類の見分け方」</b>から。
+        車検も、税金も、保険も、料金表も──ぜんぶ <b>「その車がどの区分か」</b> で決まります。
+        下のテーマを上から順に読んで、最後にクイズで力だめしをしましょう。
       </div>
-      <div class="theme-card" onclick="showLesson('zeikin')">
-        <div class="t-num">2</div>
-        <div class="icon">💰</div>
-        <div class="t-body">
-          <div class="t-title">車にかかる税金</div>
-          <div class="t-desc">自動車税・重量税・環境性能割・消費税（課税と非課税のちがい）</div>
-          <div class="t-done" id="done-zeikin"></div>
+      <div class="theme-list">
+        <div class="theme-card" onclick="showLesson('shumoku')">
+          <div class="t-num">1</div><div class="icon">🚗</div>
+          <div class="t-body">
+            <div class="t-title">車種区分の基礎</div>
+            <div class="t-desc">乗用車と貨物車・大きさ（普通/小型/軽）・ナンバーの数字・自家用と事業用</div>
+            <div class="t-done" id="done-shumoku"></div>
+          </div><div class="arrow">›</div>
         </div>
-        <div class="arrow">›</div>
-      </div>
-      <div class="theme-card" onclick="showLesson('shaken')">
-        <div class="t-num">3</div>
-        <div class="icon">🔍</div>
-        <div class="t-body">
-          <div class="t-title">車検のしくみ</div>
-          <div class="t-desc">車検とは・期間は何年ごと・料金の中身（法定費用と整備費用）</div>
-          <div class="t-done" id="done-shaken"></div>
+        <div class="theme-card" onclick="showLesson('zeikin')">
+          <div class="t-num">2</div><div class="icon">💰</div>
+          <div class="t-body">
+            <div class="t-title">車にかかる税金</div>
+            <div class="t-desc">自動車税・重量税・環境性能割・消費税（課税と非課税のちがい）</div>
+            <div class="t-done" id="done-zeikin"></div>
+          </div><div class="arrow">›</div>
         </div>
-        <div class="arrow">›</div>
-      </div>
-      <div class="theme-card" onclick="showLesson('hoken')">
-        <div class="t-num">4</div>
-        <div class="icon">🛡️</div>
-        <div class="t-body">
-          <div class="t-title">自動車保険の基礎</div>
-          <div class="t-desc">自賠責（強制）と任意保険・何を守る保険か・自家用と事業用</div>
-          <div class="t-done" id="done-hoken"></div>
+        <div class="theme-card" onclick="showLesson('shaken')">
+          <div class="t-num">3</div><div class="icon">🔍</div>
+          <div class="t-body">
+            <div class="t-title">車検のしくみ</div>
+            <div class="t-desc">車検とは・期間は何年ごと・料金の中身（法定費用と整備費用）</div>
+            <div class="t-done" id="done-shaken"></div>
+          </div><div class="arrow">›</div>
         </div>
-        <div class="arrow">›</div>
-      </div>
-      <div class="theme-card" onclick="showLesson('kozo')">
-        <div class="t-num">5</div>
-        <div class="icon">🔩</div>
-        <div class="t-body">
-          <div class="t-title">車の構造と仕組み</div>
-          <div class="t-desc">エンジンの種類・ミッション（AT/MT）・駆動方式・主な消耗品</div>
-          <div class="t-done" id="done-kozo"></div>
+        <div class="theme-card" onclick="showLesson('hoken')">
+          <div class="t-num">4</div><div class="icon">🛡️</div>
+          <div class="t-body">
+            <div class="t-title">自動車保険の基礎</div>
+            <div class="t-desc">自賠責（強制）と任意保険・何を守る保険か・自家用と事業用</div>
+            <div class="t-done" id="done-hoken"></div>
+          </div><div class="arrow">›</div>
         </div>
-        <div class="arrow">›</div>
-      </div>
-      <div class="theme-card quiz-card" onclick="showQuizMenu()">
-        <div class="t-num">✓</div>
-        <div class="icon">✏️</div>
-        <div class="t-body">
-          <div class="t-title">クイズで力だめし</div>
-          <div class="t-desc">テーマごとに〇×・選択クイズ。覚えたか確認しよう</div>
+        <div class="theme-card" onclick="showLesson('kozo')">
+          <div class="t-num">5</div><div class="icon">🔩</div>
+          <div class="t-body">
+            <div class="t-title">車の構造と仕組み</div>
+            <div class="t-desc">エンジンの種類・ミッション（AT/MT）・駆動方式・主な消耗品</div>
+            <div class="t-done" id="done-kozo"></div>
+          </div><div class="arrow">›</div>
         </div>
-        <div class="arrow">›</div>
+        <div class="theme-card quiz-card" onclick="showQuizMenu()">
+          <div class="t-num">✓</div><div class="icon">✏️</div>
+          <div class="t-body">
+            <div class="t-title">クイズで力だめし</div>
+            <div class="t-desc">テーマごとに〇×・選択クイズ。覚えたか確認しよう</div>
+          </div><div class="arrow">›</div>
+        </div>
       </div>
-    </div>
-    <div class="info-box green" style="margin-top:18px;">
-      <span class="ib-head">📌 このアプリの使い方</span>
-      テーマを読み終えたら、画面いちばん下の「→ クイズに挑戦」を押すと、その内容のクイズが出ます。
-      間違えても解説が出るので、何度でも挑戦してOKです。
-    </div>
+      <div class="info-box green" style="margin-top:18px;">
+        <span class="ib-head">📌 このアプリの使い方</span>
+        テーマを読み終えたら、画面いちばん下の「→ クイズに挑戦」を押すと、その内容のクイズが出ます。
+        間違えても解説が出るので、何度でも挑戦してOKです。
+      </div>
+    </div><!-- /lang-ja -->
+
+    <!-- HOME: ベトナム語 -->
+    <div class="lang-vi">
+      <div class="home-lead">
+        Công việc ở xưởng xe bắt đầu từ <b>「Cách phân loại xe」</b>.
+        Đăng kiểm, thuế, bảo hiểm, bảng giá — tất cả đều được quyết định bởi <b>「xe thuộc loại nào」</b>.
+        Hãy đọc từng chủ đề theo thứ tự, rồi kiểm tra kiến thức bằng quiz nhé.
+      </div>
+      <div class="theme-list">
+        <div class="theme-card" onclick="showLesson('shumoku')">
+          <div class="t-num">1</div><div class="icon">🚗</div>
+          <div class="t-body">
+            <div class="t-title">Phân loại xe cơ bản</div>
+            <div class="t-desc">Xe chở người & xe tải · Kích thước (thường/nhỏ/mini) · Số biển số · Cá nhân & thương mại</div>
+            <div class="t-done" id="done-shumoku-vi"></div>
+          </div><div class="arrow">›</div>
+        </div>
+        <div class="theme-card" onclick="showLesson('zeikin')">
+          <div class="t-num">2</div><div class="icon">💰</div>
+          <div class="t-body">
+            <div class="t-title">Thuế liên quan đến xe</div>
+            <div class="t-desc">Thuế xe · Thuế trọng tải · Thuế môi trường · Thuế tiêu thụ (có/không chịu thuế)</div>
+            <div class="t-done" id="done-zeikin-vi"></div>
+          </div><div class="arrow">›</div>
+        </div>
+        <div class="theme-card" onclick="showLesson('shaken')">
+          <div class="t-num">3</div><div class="icon">🔍</div>
+          <div class="t-body">
+            <div class="t-title">Cơ chế đăng kiểm xe</div>
+            <div class="t-desc">Đăng kiểm là gì · Bao nhiêu năm 1 lần · Nội dung chi phí (phí bắt buộc & phí sửa chữa)</div>
+            <div class="t-done" id="done-shaken-vi"></div>
+          </div><div class="arrow">›</div>
+        </div>
+        <div class="theme-card" onclick="showLesson('hoken')">
+          <div class="t-num">4</div><div class="icon">🛡️</div>
+          <div class="t-body">
+            <div class="t-title">Bảo hiểm ô tô cơ bản</div>
+            <div class="t-desc">Bảo hiểm bắt buộc & tự nguyện · Bảo vệ điều gì · Xe cá nhân & thương mại</div>
+            <div class="t-done" id="done-hoken-vi"></div>
+          </div><div class="arrow">›</div>
+        </div>
+        <div class="theme-card" onclick="showLesson('kozo')">
+          <div class="t-num">5</div><div class="icon">🔩</div>
+          <div class="t-body">
+            <div class="t-title">Cấu tạo & cơ chế xe</div>
+            <div class="t-desc">Loại động cơ · Hộp số (AT/MT) · Hệ dẫn động · Phụ tùng tiêu hao chính</div>
+            <div class="t-done" id="done-kozo-vi"></div>
+          </div><div class="arrow">›</div>
+        </div>
+        <div class="theme-card quiz-card" onclick="showQuizMenu()">
+          <div class="t-num">✓</div><div class="icon">✏️</div>
+          <div class="t-body">
+            <div class="t-title">Kiểm tra kiến thức</div>
+            <div class="t-desc">Quiz Đúng/Sai & chọn đáp án theo từng chủ đề</div>
+          </div><div class="arrow">›</div>
+        </div>
+      </div>
+      <div class="info-box green" style="margin-top:18px;">
+        <span class="ib-head">📌 Cách dùng ứng dụng</span>
+        Sau khi đọc xong mỗi chủ đề, nhấn「→ Làm quiz」ở cuối trang để kiểm tra.
+        Trả lời sai cũng có giải thích — cứ thử lại nhiều lần nhé!
+      </div>
+    </div><!-- /lang-vi -->
   </div>
 
   <!-- ==================== LESSON 1: 車種区分 ==================== -->
   <div class="screen" id="screen-shumoku">
+  <div class="lang-vi">
+    <div class="lesson-intro">Xe có <b>nhiều「phân loại」</b>. Nếu biết xe của khách thuộc loại nào, giá đăng kiểm, thuế, bảo hiểm sẽ tự xác định. Hãy nhớ <b>3 cách phân loại</b> quan trọng nhất.</div>
+    <div class="section-title">① Xe chở người và xe tải (quan trọng nhất)</div>
+    <div class="body-text">Xe được chia thành 2 loại dựa trên <b>「chở gì là chính」</b>.</div>
+    <div class="compare">
+      <div class="cmp-card"><div class="cc-icon">🚙</div><div class="cc-title">Xe chở người</div><ul><li>Chính là <b>người</b></li><li>Ghế ngồi & cốp hành lý</li><li>VD: Prius, N-BOX, Alphard</li><li>Biển số 3・5・7</li></ul></div>
+      <div class="cmp-card alt"><div class="cc-icon">🚚</div><div class="cc-title">Xe tải (xe thương mại)</div><ul><li>Chính là <b>hàng hóa</b></li><li>Thùng xe rộng</li><li>VD: Hiace, xe tải, xe tải nhỏ</li><li>Biển số 1・4</li></ul></div>
+    </div>
+    <div class="analogy"><b>「Xe có nhiều ghế ngồi」là xe chở người</b>, <b>「Xe có thùng hàng rộng」là xe tải</b>. Hiace trông như minivan nhưng có thể là xe tải (biển 4 hoặc 1).</div>
+    <div class="info-box gold"><span class="ib-head">Tại sao quan trọng?</span>Xe chở người và xe tải có <b>thời hạn đăng kiểm, thuế, và phí bảo hiểm khác nhau</b>.</div>
+    <div class="section-title">② Kích thước xe (thường / nhỏ / mini)</div>
+    <div class="body-text">Cùng là xe chở người nhưng chia thành 3 loại theo <b>kích thước và dung tích động cơ</b>.</div>
+    <div class="table-wrap"><table>
+      <tr><th>Loại</th><th>Kích thước / dung tích</th><th>Biển số</th></tr>
+      <tr><td>Xe thường (普通)</td><td>Vượt khung xe nhỏ</td><td>3 (người) / 1 (tải)</td></tr>
+      <tr><td>Xe nhỏ (小型)</td><td>D4.7m・R1.7m・C2.0m・≤2,000cc <b>tất cả</b></td><td>5 (người) / 4 (tải)</td></tr>
+      <tr><td>Xe mini (軽)</td><td>D3.4m・R1.48m・C2.0m・≤<b>660cc</b></td><td>Biển vàng</td></tr>
+    </table></div>
+    <div class="analogy"><b>「Tất cả 4 tiêu chí đều trong khung → xe nhỏ」</b>. Vượt 1 tiêu chí → xe thường (biển 3). Minivan biển 3 vì rộng hoặc dung tích vượt khung nhỏ.</div>
+    <div class="section-title">③ Số phân loại trên biển số</div>
+    <div class="body-text">Nhìn <b>chữ số đầu tiên trên biển số</b> là biết ngay mục đích sử dụng.</div>
+    <div class="table-wrap"><table>
+      <tr><th>Số</th><th>Loại</th><th>Hình ảnh</th></tr>
+      <tr><td><b>1</b></td><td>Xe tải thường</td><td>Xe tải lớn</td></tr>
+      <tr><td><b>2</b></td><td>Xe khách thường (bus)</td><td>Bus ≥11 người</td></tr>
+      <tr><td><b>3</b></td><td>Xe chở người thường</td><td>Ô tô lớn</td></tr>
+      <tr><td><b>4</b></td><td>Xe tải nhỏ</td><td>Van, xe tải nhỏ</td></tr>
+      <tr><td><b>5</b></td><td>Xe chở người nhỏ</td><td>Ô tô nhỏ thông thường</td></tr>
+      <tr><td><b>8</b></td><td>Mục đích đặc biệt</td><td>Xe cắm trại, xe cứu thương</td></tr>
+    </table></div>
+    <div class="info-box gold"><span class="ib-head">Cách nhớ</span><b>Số lẻ (3・5) = xe chở người</b>, <b>1・4 = xe tải</b>. Nghe「biển 4」→「xe tải nhỏ」là OK!</div>
+    <div class="section-title">④ Xe cá nhân và xe thương mại</div>
+    <div class="body-text">Cùng một chiếc xe nhưng <b>「có dùng để kiếm tiền bằng cách chở người/hàng không」</b> sẽ khác nhau. Phân biệt qua màu biển số.</div>
+    <div class="compare">
+      <div class="cmp-card"><div class="cc-icon">⬜</div><div class="cc-title">Cá nhân (自家用)</div><ul><li>Xe dùng cho bản thân / công ty</li><li>Biển trắng (mini: vàng)</li><li>Phần lớn khách hàng</li></ul></div>
+      <div class="cmp-card alt"><div class="cc-icon">🟩</div><div class="cc-title">Thương mại (事業用)</div><ul><li>Kiếm tiền bằng cách chở</li><li>Biển xanh (mini: đen)</li><li>Taxi, xe tải giao hàng, bus</li></ul></div>
+    </div>
+    <div class="info-box"><span class="ib-head">Tại sao quan trọng?</span>Xe thương mại chạy nhiều hơn nên <b>thuế và phí bảo hiểm khác xe cá nhân</b>. Thấy biển xanh →「xe thương mại」nhé!</div>
+    <div class="quiz-cta" onclick="startQuiz('shumoku')"><div class="qc-label">Kiểm tra hiểu biết</div><div class="qc-title">→ Quiz Phân loại xe</div><div class="qc-sub">5 câu · Đúng/Sai và chọn đáp án</div></div>
+  </div><!-- /lang-vi -->
+  <div class="lang-ja">
     <div class="lesson-intro">
       クルマには <b>たくさんの「区分（くぶん）」</b> があります。
       お客様の車が「どの区分か」が分かれば、車検の値段・税金・保険・必要な書類が自動的に決まります。
@@ -557,10 +672,41 @@ tr:nth-child(even) td { background: #f7f9f7; }
       <div class="qc-title">→ 車種区分クイズに挑戦</div>
       <div class="qc-sub">全5問・〇×と選択式</div>
     </div>
+  </div><!-- /lang-ja -->
   </div>
 
   <!-- ==================== LESSON 2: 税金 ==================== -->
   <div class="screen" id="screen-zeikin">
+  <div class="lang-vi">
+    <div class="lesson-intro">Xe bị đánh <b>nhiều loại thuế</b>. Hãy nhớ「nộp khi nào · cho cái gì · ai nhận」. Hiểu điều này sẽ giúp bạn hiểu「<b>có/không chịu thuế tiêu thụ</b>」trong bảng giá đăng kiểm.</div>
+    <div class="section-title">① 4 loại thuế chính của xe</div>
+    <div class="table-wrap"><table>
+      <tr><th>Tên thuế</th><th>Nộp khi nào</th><th>Quyết định bởi</th></tr>
+      <tr><td>Thuế xe (自動車税)</td><td>Hàng năm (chủ xe ngày 1/4)</td><td>Dung tích động cơ (xe mini: cố định)</td></tr>
+      <tr><td>Thuế trọng tải (重量税)</td><td>Khi đăng kiểm (gộp)</td><td>Trọng lượng xe & năm sử dụng</td></tr>
+      <tr><td>Thuế môi trường (環境性能割)</td><td>Khi mua xe</td><td>Mức tiêu thụ nhiên liệu</td></tr>
+      <tr><td>Thuế tiêu thụ (消費税)</td><td>Khi mua / sửa chữa</td><td>Giá xe, phụ tùng, công lao động</td></tr>
+    </table></div>
+    <div class="section-title">② Giải thích từng loại</div>
+    <div class="info-box green"><span class="ib-head">🅰 Thuế xe (自動車税)</span>Thuế gửi đến <b>chủ xe ngày 1/4 hàng năm</b>. Động cơ càng lớn, thuế càng cao. Xe mini có mức cố định (10,800 yên/năm).</div>
+    <div class="info-box green"><span class="ib-head">🅱 Thuế trọng tải (重量税)</span>Nộp <b>gộp 2 năm khi đăng kiểm</b> (xe tải: 1 năm). Xe nặng hơn hoặc cũ hơn 13/18 năm thì cao hơn. Xe tiết kiệm xăng được giảm/miễn.</div>
+    <div class="info-box green"><span class="ib-head">🅲 Thuế môi trường (環境性能割)</span>Đánh <b>khi mua xe</b>. Xe tiết kiệm xăng nộp ít (EV = 0 yên), xe tiêu tốn xăng nộp nhiều.</div>
+    <div class="info-box green"><span class="ib-head">🅳 Thuế tiêu thụ (消費税)</span>10% áp dụng cho giá xe, <b>phụ tùng & công lao động</b>. Là thuế thường ngày cho dịch vụ của cửa hàng.</div>
+    <div class="section-title">③ Thuế tiêu thụ: có hay không?</div>
+    <div class="body-text">Đây là điểm hay nhầm lẫn. <b>Thuế và bảo hiểm bắt buộc KHÔNG chịu thuế tiêu thụ.</b></div>
+    <div class="table-wrap"><table>
+      <tr><th>Hạng mục</th><th>Thuế tiêu thụ</th></tr>
+      <tr><td>Công lao động, phí kiểm tra cơ bản</td><td class="taxed">Có (chịu thuế)</td></tr>
+      <tr><td>Phụ tùng, dầu nhớt</td><td class="taxed">Có (chịu thuế)</td></tr>
+      <tr><td>Thuế trọng tải</td><td class="free">Không (miễn thuế)</td></tr>
+      <tr><td>Phí bảo hiểm bắt buộc (自賠責)</td><td class="free">Không (miễn thuế)</td></tr>
+      <tr><td>Lệ phí tem, đăng ký</td><td class="free">Không (miễn thuế)</td></tr>
+    </table></div>
+    <div class="analogy"><b>「Đánh thuế tiêu thụ lên thuế khác = đánh thuế 2 lần」</b> nên không áp dụng. <b>Tiền nộp nhà nước (trọng tải, tem) và bảo hiểm bắt buộc = miễn thuế</b>. <b>Dịch vụ của cửa hàng (công lao động, phụ tùng) = có thuế</b>.</div>
+    <div class="info-box gold"><span class="ib-head">Liên kết với Chủ đề 3</span>Khái niệm「có/không chịu thuế」này sẽ xuất hiện lại ngay ở <b>chi tiết giá đăng kiểm</b>.</div>
+    <div class="quiz-cta" onclick="startQuiz('zeikin')"><div class="qc-label">Kiểm tra hiểu biết</div><div class="qc-title">→ Quiz Thuế xe</div><div class="qc-sub">5 câu · Đúng/Sai và chọn đáp án</div></div>
+  </div><!-- /lang-vi -->
+  <div class="lang-ja">
     <div class="lesson-intro">
       クルマには <b>いくつもの税金</b> がかかります。
       「いつ・何に対して・誰に払う税金か」を整理して覚えましょう。
@@ -623,10 +769,43 @@ tr:nth-child(even) td { background: #f7f9f7; }
       <div class="qc-title">→ 税金クイズに挑戦</div>
       <div class="qc-sub">全5問・〇×と選択式</div>
     </div>
+  </div><!-- /lang-ja -->
   </div>
 
   <!-- ==================== LESSON 3: 車検 ==================== -->
   <div class="screen" id="screen-shaken">
+  <div class="lang-vi">
+    <div class="lesson-intro">Đăng kiểm (車検) là <b>「kiểm tra của nhà nước để xác nhận xe có an toàn không」</b>. Không qua đăng kiểm thì không được chạy trên đường công cộng. Hãy nhớ <b>thời hạn và nội dung chi phí</b>.</div>
+    <div class="section-title">① Đăng kiểm bao nhiêu năm 1 lần?</div>
+    <div class="body-text">Thời hạn đăng kiểm <b>phụ thuộc vào loại xe (Chủ đề 1)</b>. Đây là lý do phải nhớ phân loại xe.</div>
+    <div class="table-wrap"><table>
+      <tr><th>Loại xe</th><th>Lần đầu (xe mới)</th><th>Từ lần 2 trở đi</th></tr>
+      <tr><td>Xe chở người cá nhân (biển 3・5 / xe mini)</td><td class="tot">3 năm</td><td class="tot">2 năm/lần</td></tr>
+      <tr><td>Xe tải nhỏ (biển 4)</td><td>2 năm</td><td class="tot">1 năm/lần</td></tr>
+      <tr><td>Xe tải thường (biển 1)</td><td>2 năm</td><td class="tot">1 năm/lần</td></tr>
+      <tr><td>Bus, taxi (thương mại)</td><td>1 năm</td><td class="tot">1 năm/lần</td></tr>
+    </table></div>
+    <div class="info-box gold"><span class="ib-head">Phổ biến nhất</span>Hầu hết khách hàng dùng <b>xe chở người cá nhân →「mới: 3 năm, sau đó 2 năm/lần」</b>. <b>Xe tải (biển 4・1) đăng kiểm mỗi năm</b> — nhớ cặp này là được.</div>
+    <div class="analogy">Tại sao xe tải mỗi năm? <b>Chở hàng nặng = mau hỏng hơn = cần kiểm tra thường xuyên hơn</b>. Xe làm việc nhiều hơn thì kiểm tra nhiều hơn — hình dung thế này sẽ không quên.</div>
+    <div class="section-title">② Chi phí đăng kiểm gồm 2 phần</div>
+    <div class="body-text">Tổng chi phí đăng kiểm chia thành <b>「Phí bắt buộc」+「Phí sửa chữa」</b>.</div>
+    <div class="compare">
+      <div class="cmp-card alt"><div class="cc-icon">🏛️</div><div class="cc-title">Phí bắt buộc (miễn thuế)</div><ul><li>Tiền nộp nhà nước</li><li>Thuế trọng tải</li><li>Phí bảo hiểm bắt buộc</li><li>Lệ phí tem đăng kiểm</li><li>Mọi cửa hàng đều giống nhau</li></ul></div>
+      <div class="cmp-card"><div class="cc-icon">🔧</div><div class="cc-title">Phí sửa chữa (có thuế)</div><ul><li>Phí dịch vụ của cửa hàng</li><li>Phí kiểm tra cơ bản</li><li>Phí đại diện kiểm tra</li><li>Phụ tùng thay thế & công lao động</li><li>Tùy cửa hàng sẽ khác nhau</li></ul></div>
+    </div>
+    <div class="info-box"><span class="ib-head">Liên kết với bảng giá</span>Trong bảng giá:「<b>Chịu thuế = phí sửa chữa</b>」,「<b>Miễn thuế = phí bắt buộc</b>」. Đây chính là điều đã học ở Chủ đề 2.</div>
+    <div class="section-title">③ Ví dụ tổng chi phí xe chở người cá nhân</div>
+    <div class="table-wrap"><table>
+      <tr><th>Loại xe</th><th>Phí kiểm tra</th><th>Có thuế</th><th>Miễn thuế</th><th>Tổng cộng</th></tr>
+      <tr><td>Xe mini</td><td>19,580 yên</td><td>12,100 yên</td><td>26,240 yên</td><td class="tot">57,920 yên</td></tr>
+      <tr><td>Nhỏ ~1t</td><td>21,780 yên</td><td>12,100 yên</td><td>36,150 yên</td><td class="tot">70,030 yên</td></tr>
+      <tr><td>Vừa ~1.5t</td><td>22,880 yên</td><td>12,100 yên</td><td>44,350 yên</td><td class="tot">79,330 yên</td></tr>
+      <tr><td>Lớn ~2t</td><td>25,080 yên</td><td>12,100 yên</td><td>52,550 yên</td><td class="tot">89,730 yên</td></tr>
+    </table></div>
+    <div class="info-box gold"><span class="ib-head">Tại sao xe lớn đắt hơn?</span><b>Xe nặng hơn → thuế trọng tải (miễn thuế) cao hơn</b>. Phần lớn sự chênh lệch là do <b>thuế trọng tải</b>.</div>
+    <div class="quiz-cta" onclick="startQuiz('shaken')"><div class="qc-label">Kiểm tra hiểu biết</div><div class="qc-title">→ Quiz Đăng kiểm xe</div><div class="qc-sub">5 câu · Đúng/Sai và chọn đáp án</div></div>
+  </div><!-- /lang-vi -->
+  <div class="lang-ja">
     <div class="lesson-intro">
       車検（しゃけん）は <b>「車が安全に走れる状態かを国がチェックする検査」</b>。
       これに通らないと公道を走れません。受付で必ず聞かれるのが「<b>次の車検はいつ？</b>」。期間と料金の中身を覚えましょう。
@@ -706,10 +885,32 @@ tr:nth-child(even) td { background: #f7f9f7; }
       <div class="qc-title">→ 車検クイズに挑戦</div>
       <div class="qc-sub">全5問・〇×と選択式</div>
     </div>
+  </div><!-- /lang-ja -->
   </div>
 
   <!-- ==================== LESSON 4: 保険 ==================== -->
   <div class="screen" id="screen-hoken">
+  <div class="lang-vi">
+    <div class="lesson-intro">Bảo hiểm xe có <b>2 loại</b>. Một là <b>「自賠責 — bắt buộc tất cả phải có」</b>, hai là <b>「bảo hiểm tự nguyện — tự chọn」</b>. Hãy nhớ sự khác biệt về vai trò của 2 loại này.</div>
+    <div class="section-title">① Bảo hiểm bắt buộc và bảo hiểm tự nguyện</div>
+    <div class="compare">
+      <div class="cmp-card alt"><div class="cc-icon">🛡️</div><div class="cc-title">Bảo hiểm bắt buộc (自賠責)</div><ul><li>Tất cả xe <b>bắt buộc phải có</b></li><li>Không có → không được chạy đường công cộng</li><li>Chỉ bảo vệ <b>thương tích/tính mạng người khác</b></li><li>Mức bảo vệ tối thiểu</li><li><b>Mua gộp khi đăng kiểm</b></li></ul></div>
+      <div class="cmp-card"><div class="cc-icon">➕</div><div class="cc-title">Bảo hiểm tự nguyện</div><ul><li>Tự quyết định có mua hay không</li><li>Bù phần thiếu của bảo hiểm bắt buộc</li><li>Bảo vệ cả <b>tài sản</b> người khác</li><li>Bảo vệ cả thương tích & xe của mình</li><li>Sản phẩm của các công ty bảo hiểm</li></ul></div>
+    </div>
+    <div class="analogy"><b>Bảo hiểm bắt buộc là「bộ sơ cứu tối thiểu」</b>— chỉ bắt buộc bảo vệ thương tích người khác. Xe của họ hay xe của mình thì không có. Vì vậy cần <b>bảo hiểm tự nguyện để bổ sung</b>.</div>
+    <div class="section-title">② Bảo hiểm bắt buộc đi kèm đăng kiểm</div>
+    <div class="info-box green">Thời hạn bảo hiểm bắt buộc <b>khớp với thời hạn đăng kiểm</b> (xe chở người thường: 24 tháng). Vì vậy trong bảng giá, phí bảo hiểm bắt buộc nằm trong <b>「phí bắt buộc (miễn thuế)」của đăng kiểm</b>.</div>
+    <div class="table-wrap"><table>
+      <tr><th>Loại xe</th><th>Bảo hiểm bắt buộc 24 tháng</th></tr>
+      <tr><td>Xe mini</td><td>17,540 yên</td></tr>
+      <tr><td>Xe nhỏ/thường chở người</td><td>17,650 yên</td></tr>
+    </table></div>
+    <div class="section-title">③ Xe cá nhân vs thương mại: phí bảo hiểm khác nhau</div>
+    <div class="body-text">Phân loại <b>cá nhân (biển trắng) / thương mại (biển xanh)</b> từ Chủ đề 1 cũng áp dụng cho bảo hiểm. <b>Cùng một xe nhưng phí bảo hiểm có thể khác nhau</b> do mức độ rủi ro khác nhau.</div>
+    <div class="info-box"><span class="ib-head">Lưu ý khi tiếp khách</span>Biết xe khách là <b>「cá nhân hay thương mại」「chở người hay xe tải」</b> thì có thể báo ngay phí bảo hiểm bắt buộc. Cuối cùng vẫn về <b>「phân loại xe」từ Chủ đề 1</b>.</div>
+    <div class="quiz-cta" onclick="startQuiz('hoken')"><div class="qc-label">Kiểm tra hiểu biết</div><div class="qc-title">→ Quiz Bảo hiểm xe</div><div class="qc-sub">5 câu · Đúng/Sai và chọn đáp án</div></div>
+  </div><!-- /lang-vi -->
+  <div class="lang-ja">
     <div class="lesson-intro">
       クルマの保険は <b>2種類</b>。
       ひとつは <b>全員が必ず入る「自賠責（じばいせき）」</b>、もうひとつは <b>自分の意思で入る「任意保険」</b>。
@@ -773,10 +974,47 @@ tr:nth-child(even) td { background: #f7f9f7; }
       <div class="qc-title">→ 保険クイズに挑戦</div>
       <div class="qc-sub">全5問・〇×と選択式</div>
     </div>
+  </div><!-- /lang-ja -->
   </div>
 
   <!-- ==================== LESSON 5: 車の構造と仕組み ==================== -->
   <div class="screen" id="screen-kozo">
+  <div class="lang-vi">
+    <div class="lesson-intro">Trong công việc sửa chữa xe, biết <b>động cơ và hệ thống gầm xe hoạt động thế nào</b> sẽ giúp giải thích cho khách và bàn giao phụ tùng dễ hơn. Chuyên môn sâu học sau — trước tiên hãy nhớ <b>「tên và vai trò」</b>.</div>
+    <div class="section-title">① Các loại động cơ</div>
+    <div class="body-text">Động cơ là <b>trái tim của xe</b>. Có 4 loại chính theo nhiên liệu.</div>
+    <div class="compare">
+      <div class="cmp-card"><div class="cc-icon">⛽</div><div class="cc-title">Xăng (ガソリン)</div><ul><li>Phổ biến nhất</li><li>Xăng thường / xăng cao cấp</li><li>Phần lớn xe chở người</li></ul></div>
+      <div class="cmp-card alt"><div class="cc-icon">🛢️</div><div class="cc-title">Diesel (ディーゼル)</div><ul><li>Nhiên liệu là <b>dầu diesel</b></li><li>Xe tải, bus, một số SUV</li><li>Tiết kiệm ◎ · Mô-men lớn</li></ul></div>
+    </div>
+    <div class="info-box green"><span class="ib-head">🔋 Hybrid (ハイブリッド)</span>Động cơ xăng + mô-tơ điện. Khi khởi động/tốc độ thấp chạy bằng điện — êm ái. Đại diện: Prius, Aqua. Vẫn đổ xăng thông thường.</div>
+    <div class="info-box green"><span class="ib-head">⚡ Xe điện (EV)</span>Không có động cơ đốt trong — chỉ dùng mô-tơ điện. Cần sạc pin. Nissan Leaf, Tesla,... Không khí thải nhưng quãng đường phụ thuộc pin còn bao nhiêu.</div>
+    <div class="analogy"><b>「Đổ gì vào cửa nhiên liệu」</b>để phân biệt loại động cơ. Xăng → xe xăng, dầu diesel → xe diesel, cổng sạc → EV. <b>Đổ nhầm gây hỏng nghiêm trọng</b> — khi tiếp khách hãy xác nhận loại nhiên liệu!</div>
+    <div class="section-title">② Các loại hộp số (AT / MT / CVT)</div>
+    <div class="body-text">Thiết bị truyền lực từ động cơ đến bánh xe là <b>hộp số</b>. Có 3 loại chính.</div>
+    <div class="table-wrap"><table>
+      <tr><th>Loại</th><th>Đặc điểm</th><th>Bàn đạp côn</th></tr>
+      <tr><td><b>AT (Tự động)</b></td><td>Tự chuyển số. 2 bàn đạp: ga & phanh</td><td class="free">Không có</td></tr>
+      <tr><td><b>MT (Số tay)</b></td><td>Tự đạp côn chuyển số. 3 bàn đạp</td><td class="taxed">Có</td></tr>
+      <tr><td><b>CVT (Vô cấp)</b></td><td>Biến tốc bằng dây đai — chạy êm. Xe nhỏ/mini nhiều</td><td class="free">Không có</td></tr>
+    </table></div>
+    <div class="info-box gold"><span class="ib-head">Lưu ý khi tiếp khách</span>Khách có「bằng lái AT hạn chế」không lái được xe MT. Khi xếp xe thay thế, bắt buộc hỏi <b>「AT hay MT?」</b>.</div>
+    <div class="section-title">③ Hệ dẫn động (FF · FR · 4WD)</div>
+    <div class="body-text"><b>Lực từ động cơ truyền đến bánh xe nào</b> — đó là「hệ dẫn động」.</div>
+    <div class="compare">
+      <div class="cmp-card"><div class="cc-icon">🚘</div><div class="cc-title">FF (Cầu trước)</div><ul><li>Bánh trước kéo xe</li><li>Phổ biến ở xe compact</li><li>Khoang rộng · Tiết kiệm ◎</li></ul></div>
+      <div class="cmp-card alt"><div class="cc-icon">🏎️</div><div class="cc-title">FR (Cầu sau)</div><ul><li>Bánh sau đẩy xe</li><li>Xe sang · Xe thể thao</li><li>Cân bằng trước sau tốt</li></ul></div>
+    </div>
+    <div class="info-box green"><span class="ib-head">🏔️ 4WD / AWD (4 bánh chủ động)</span>Lực truyền đến cả 4 bánh. Mạnh trên đường tuyết/địa hình xấu. Khu vực Kirishima mùa đông rất hữu ích.</div>
+    <div class="section-title">④ Phụ tùng tiêu hao chính</div>
+    <div class="info-box"><span class="ib-head">🛢️ Dầu động cơ</span><b>Bôi trơn & làm mát</b> các bộ phận kim loại bên trong động cơ. Cũ bẩn sẽ làm hỏng động cơ. Thay định kỳ (khoảng 3.000~5.000 km) là dịch vụ bảo dưỡng cơ bản.</div>
+    <div class="info-box"><span class="ib-head">🔴 Phanh</span><b>Phanh đĩa → Má phanh (brake pad)</b> (thường ở bánh trước)<br><b>Phanh tang trống → Guốc phanh (brake shoe)</b> (thường bánh sau)<br>Mòn hết → giảm lực phanh, nguy hiểm. Kiểm tra độ dày là bắt buộc trong đăng kiểm.</div>
+    <div class="info-box"><span class="ib-head">🔋 Ắc quy</span>Tích điện, cung cấp cho mô-tơ khởi động, đèn, màn hình,... Hỏng → không khởi động được xe. Thay mỗi 2~3 năm.</div>
+    <div class="info-box"><span class="ib-head">🔵 Lốp xe</span>Độ sâu gai (<b>khi thấy vạch mòn thì thay</b>) và áp suất rất quan trọng. Áp suất thấp → lốp mau hỏng và tốn nhiên liệu hơn.</div>
+    <div class="analogy">Phụ tùng tiêu hao = <b>「kiểm tra sức khỏe định kỳ của con người」</b>. Dầu nhớt = máu, ắc quy = tim, phanh = chân, lốp = đế giày. Bỏ qua bất kỳ cái nào đều ảnh hưởng toàn bộ.</div>
+    <div class="quiz-cta" onclick="startQuiz('kozo')"><div class="qc-label">Kiểm tra hiểu biết</div><div class="qc-title">→ Quiz Cấu tạo xe</div><div class="qc-sub">5 câu · Đúng/Sai và chọn đáp án</div></div>
+  </div><!-- /lang-vi -->
+  <div class="lang-ja">
     <div class="lesson-intro">
       クルマの整備の仕事では、<b>エンジンや足回りがどうなっているか</b>を知っておくと、
       お客様への説明や部品の受け渡しがスムーズになります。
@@ -899,57 +1137,28 @@ tr:nth-child(even) td { background: #f7f9f7; }
       <div class="qc-title">→ 構造・仕組みクイズに挑戦</div>
       <div class="qc-sub">全5問・〇×と選択式</div>
     </div>
+  </div><!-- /lang-ja -->
   </div>
 
   <!-- ==================== QUIZ MENU ==================== -->
   <div class="screen" id="screen-quiz-menu">
-    <div class="lesson-intro">
-      覚えたか、クイズで力だめし。間違えても <b>解説が出る</b> ので、何度でも挑戦してOK。
+    <!-- JA -->
+    <div class="lang-ja">
+      <div class="lesson-intro">覚えたか、クイズで力だめし。間違えても <b>解説が出る</b> ので、何度でも挑戦してOK。</div>
+      <div class="qmenu-card" onclick="startQuiz('shumoku')"><div class="icon">🚗</div><div class="qm-body"><div class="qm-title">車種区分クイズ</div><div class="qm-sub">乗用・貨物／大きさ／ナンバー／自家用・事業用</div><div class="qm-best" id="best-shumoku"></div></div><div class="arrow">›</div></div>
+      <div class="qmenu-card" onclick="startQuiz('zeikin')"><div class="icon">💰</div><div class="qm-body"><div class="qm-title">税金クイズ</div><div class="qm-sub">自動車税／重量税／環境性能割／課税・非課税</div><div class="qm-best" id="best-zeikin"></div></div><div class="arrow">›</div></div>
+      <div class="qmenu-card" onclick="startQuiz('shaken')"><div class="icon">🔍</div><div class="qm-body"><div class="qm-title">車検クイズ</div><div class="qm-sub">期間／法定費用と整備費用</div><div class="qm-best" id="best-shaken"></div></div><div class="arrow">›</div></div>
+      <div class="qmenu-card" onclick="startQuiz('hoken')"><div class="icon">🛡️</div><div class="qm-body"><div class="qm-title">保険クイズ</div><div class="qm-sub">自賠責と任意／自家用・事業用</div><div class="qm-best" id="best-hoken"></div></div><div class="arrow">›</div></div>
+      <div class="qmenu-card" onclick="startQuiz('kozo')"><div class="icon">🔩</div><div class="qm-body"><div class="qm-title">構造・仕組みクイズ</div><div class="qm-sub">エンジン種類／AT・MT／駆動方式／消耗品</div><div class="qm-best" id="best-kozo"></div></div><div class="arrow">›</div></div>
     </div>
-    <div class="qmenu-card" onclick="startQuiz('shumoku')">
-      <div class="icon">🚗</div>
-      <div class="qm-body">
-        <div class="qm-title">車種区分クイズ</div>
-        <div class="qm-sub">乗用・貨物／大きさ／ナンバー／自家用・事業用</div>
-        <div class="qm-best" id="best-shumoku"></div>
-      </div>
-      <div class="arrow">›</div>
-    </div>
-    <div class="qmenu-card" onclick="startQuiz('zeikin')">
-      <div class="icon">💰</div>
-      <div class="qm-body">
-        <div class="qm-title">税金クイズ</div>
-        <div class="qm-sub">自動車税／重量税／環境性能割／課税・非課税</div>
-        <div class="qm-best" id="best-zeikin"></div>
-      </div>
-      <div class="arrow">›</div>
-    </div>
-    <div class="qmenu-card" onclick="startQuiz('shaken')">
-      <div class="icon">🔍</div>
-      <div class="qm-body">
-        <div class="qm-title">車検クイズ</div>
-        <div class="qm-sub">期間／法定費用と整備費用</div>
-        <div class="qm-best" id="best-shaken"></div>
-      </div>
-      <div class="arrow">›</div>
-    </div>
-    <div class="qmenu-card" onclick="startQuiz('hoken')">
-      <div class="icon">🛡️</div>
-      <div class="qm-body">
-        <div class="qm-title">保険クイズ</div>
-        <div class="qm-sub">自賠責と任意／自家用・事業用</div>
-        <div class="qm-best" id="best-hoken"></div>
-      </div>
-      <div class="arrow">›</div>
-    </div>
-    <div class="qmenu-card" onclick="startQuiz('kozo')">
-      <div class="icon">🔩</div>
-      <div class="qm-body">
-        <div class="qm-title">構造・仕組みクイズ</div>
-        <div class="qm-sub">エンジン種類／AT・MT／駆動方式／消耗品</div>
-        <div class="qm-best" id="best-kozo"></div>
-      </div>
-      <div class="arrow">›</div>
+    <!-- VI -->
+    <div class="lang-vi">
+      <div class="lesson-intro">Kiểm tra xem đã nhớ chưa. Trả lời sai cũng có <b>giải thích</b> — cứ thử lại nhiều lần nhé!</div>
+      <div class="qmenu-card" onclick="startQuiz('shumoku')"><div class="icon">🚗</div><div class="qm-body"><div class="qm-title">Quiz Phân loại xe</div><div class="qm-sub">Chở người/tải · Kích thước · Biển số · Cá nhân/thương mại</div><div class="qm-best" id="best-shumoku-vi"></div></div><div class="arrow">›</div></div>
+      <div class="qmenu-card" onclick="startQuiz('zeikin')"><div class="icon">💰</div><div class="qm-body"><div class="qm-title">Quiz Thuế xe</div><div class="qm-sub">Thuế xe · Thuế trọng tải · Thuế môi trường · Có/không chịu thuế</div><div class="qm-best" id="best-zeikin-vi"></div></div><div class="arrow">›</div></div>
+      <div class="qmenu-card" onclick="startQuiz('shaken')"><div class="icon">🔍</div><div class="qm-body"><div class="qm-title">Quiz Đăng kiểm</div><div class="qm-sub">Thời hạn · Phí bắt buộc và phí sửa chữa</div><div class="qm-best" id="best-shaken-vi"></div></div><div class="arrow">›</div></div>
+      <div class="qmenu-card" onclick="startQuiz('hoken')"><div class="icon">🛡️</div><div class="qm-body"><div class="qm-title">Quiz Bảo hiểm</div><div class="qm-sub">Bắt buộc vs tự nguyện · Cá nhân/thương mại</div><div class="qm-best" id="best-hoken-vi"></div></div><div class="arrow">›</div></div>
+      <div class="qmenu-card" onclick="startQuiz('kozo')"><div class="icon">🔩</div><div class="qm-body"><div class="qm-title">Quiz Cấu tạo xe</div><div class="qm-sub">Loại động cơ · AT/MT · Hệ dẫn động · Phụ tùng tiêu hao</div><div class="qm-best" id="best-kozo-vi"></div></div><div class="arrow">›</div></div>
     </div>
   </div>
 
@@ -964,7 +1173,7 @@ tr:nth-child(even) td { background: #f7f9f7; }
   <div class="screen" id="screen-result">
     <div class="result-card">
       <div class="r-emoji" id="r-emoji">🎉</div>
-      <div class="r-score">あなたの正解数</div>
+      <div class="r-score" id="r-score-label">あなたの正解数</div>
       <div class="r-num"><span id="r-num">0</span><small> / <span id="r-total">5</span></small></div>
       <div class="r-msg" id="r-msg"></div>
       <div class="result-btns">
@@ -1002,90 +1211,243 @@ tr:nth-child(even) td { background: #f7f9f7; }
 </nav>
 
 <script>
+// ==================== 言語 ====================
+let lang = 'ja';
+try { lang = localStorage.getItem('iroha_lang') || 'ja'; } catch(e){}
+
+const UI = {
+  ja: {
+    appTitle: '車屋のいろは',
+    homeSub: '留盛自動車 新人スタッフ研修',
+    quizMenuTitle: 'クイズで力だめし',
+    resultTitle: 'クイズ結果',
+    scoreLabel: 'あなたの正解数',
+    retryBtn: 'もう一度',
+    homeBtn: 'ホームへ',
+    nextBtn: '次へ →',
+    lastBtn: '結果を見る →',
+    correct: '⭕ 正解！',
+    wrong: '❌ 残念…',
+    oxTrue: ['〇','正しい'], oxFalse: ['×','ちがう'],
+    qTagOX: '〇×問題', qTagMC: '選んでね',
+    progress: (i,t) => '第 '+(i+1)+' 問 / 全 '+t+' 問',
+    doneMark: '✓ クイズ挑戦ずみ',
+    bestMark: (b,t) => '最高記録 '+b+' / '+t+(b===t?' 🏆':''),
+    navLabels: ['ホーム','車種','税金','車検','保険','構造','クイズ'],
+    breadHome: 'ホーム',
+    quizBread: 'クイズ',
+    msgs: [
+      'パーフェクト！完璧です。受付でも自信を持って案内できますね。',
+      'よくできました！あと少しで満点。解説をもう一度読んでみましょう。',
+      'いい調子。間違えたところはレッスンに戻って復習しましょう。',
+      'もう一度レッスンを読んでから挑戦してみましょう。くり返せば必ず覚えられます。',
+    ],
+  },
+  vi: {
+    appTitle: 'Nhập môn nghề xe',
+    homeSub: 'Tomemori Auto · Đào tạo nhân viên mới',
+    quizMenuTitle: 'Kiểm tra kiến thức',
+    resultTitle: 'Kết quả Quiz',
+    scoreLabel: 'Số câu đúng của bạn',
+    retryBtn: 'Thử lại',
+    homeBtn: 'Về trang chủ',
+    nextBtn: 'Tiếp theo →',
+    lastBtn: 'Xem kết quả →',
+    correct: '⭕ Đúng rồi!',
+    wrong: '❌ Chưa đúng…',
+    oxTrue: ['〇','Đúng'], oxFalse: ['×','Sai'],
+    qTagOX: 'Đúng / Sai', qTagMC: 'Chọn đáp án',
+    progress: (i,t) => 'Câu '+(i+1)+' / '+t+' câu',
+    doneMark: '✓ Đã làm quiz',
+    bestMark: (b,t) => 'Kỷ lục '+b+' / '+t+(b===t?' 🏆':''),
+    navLabels: ['Trang chủ','Loại xe','Thuế','Đăng kiểm','Bảo hiểm','Cấu tạo','Quiz'],
+    breadHome: 'Trang chủ',
+    quizBread: 'Quiz',
+    msgs: [
+      'Hoàn hảo! Bạn có thể tự tin tư vấn khách hàng rồi đấy.',
+      'Làm tốt lắm! Gần đạt điểm tối đa rồi. Đọc lại giải thích nhé.',
+      'Đang tiến bộ. Hãy quay lại bài học để ôn phần sai.',
+      'Hãy đọc lại bài học rồi thử lại. Lặp đi lặp lại sẽ nhớ thôi!',
+    ],
+  },
+};
+
+function toggleLang() {
+  lang = (lang === 'ja') ? 'vi' : 'ja';
+  try { localStorage.setItem('iroha_lang', lang); } catch(e){}
+  applyLang();
+}
+
+function applyLang() {
+  const u = UI[lang];
+  document.body.className = lang;
+  // ヘッダーボタン表示更新
+  const btn = document.getElementById('btn-lang');
+  if (lang === 'ja') {
+    btn.innerHTML = '<span class="la">JA</span>｜<span>VI</span>';
+  } else {
+    btn.innerHTML = '<span>JA</span>｜<span class="la">VI</span>';
+  }
+  // ホームロゴ
+  const ht = document.getElementById('home-title');
+  const hs = document.getElementById('home-sub');
+  if(ht) ht.textContent = u.appTitle;
+  if(hs) hs.textContent = u.homeSub;
+  // ナビラベル
+  const navKeys = ['home','shumoku','zeikin','shaken','hoken','kozo','quiz'];
+  navKeys.forEach((k,i) => {
+    const el = document.getElementById('nav-'+k);
+    if(el) el.querySelector('.n-label').textContent = u.navLabels[i];
+  });
+  // 結果画面ラベル
+  const sl = document.getElementById('r-score-label');
+  if(sl) sl.textContent = u.scoreLabel;
+  const rb = document.getElementById('btn-retry');
+  if(rb) rb.textContent = u.retryBtn;
+  const hb = document.querySelector('.btn-home');
+  if(hb) hb.textContent = u.homeBtn;
+  // 動的テキストを再描画
+  refreshProgress();
+  refreshBestScores();
+  renderBreadcrumb();
+  // ヘッダータイトルも更新（ホーム以外でもアプリ名が出るときのため）
+  if(navStack.length === 0) setTitle(u.appTitle);
+}
+
 // ==================== メタ情報 ====================
 const LESSONS = {
-  shumoku: { title: '車種区分の基礎', nav: 'shumoku' },
-  zeikin:  { title: '車にかかる税金', nav: 'zeikin' },
-  shaken:  { title: '車検のしくみ',   nav: 'shaken' },
-  hoken:   { title: '自動車保険の基礎', nav: 'hoken' },
-  kozo:    { title: '車の構造と仕組み', nav: 'kozo' },
+  shumoku: { ja: '車種区分の基礎',   vi: 'Phân loại xe cơ bản',    nav: 'shumoku' },
+  zeikin:  { ja: '車にかかる税金',   vi: 'Thuế liên quan đến xe',  nav: 'zeikin' },
+  shaken:  { ja: '車検のしくみ',     vi: 'Cơ chế đăng kiểm xe',   nav: 'shaken' },
+  hoken:   { ja: '自動車保険の基礎', vi: 'Bảo hiểm ô tô cơ bản',  nav: 'hoken' },
+  kozo:    { ja: '車の構造と仕組み', vi: 'Cấu tạo & cơ chế xe',   nav: 'kozo' },
 };
 
 // ==================== クイズデータ ====================
 const QUIZZES = {
   shumoku: {
-    title: '車種区分クイズ',
+    title: '車種区分クイズ', viTitle: 'Quiz Phân loại xe',
     questions: [
       { type: 'ox', q: '「主に人を運ぶ車」を乗用車という。', answer: true,
-        explain: '正解は〇。人がメインなら乗用車、荷物がメインなら貨物車です。' },
+        explain: '正解は〇。人がメインなら乗用車、荷物がメインなら貨物車です。',
+        q_vi: '「Xe chủ yếu để chở người」được gọi là xe chở người (乗用車).',
+        explain_vi: 'Đúng (〇). Chở người chính = xe chở người, chở hàng chính = xe tải.' },
       { type: 'mc', q: '3ナンバーの車はどれ？', choices: ['普通乗用車', '小型貨物', 'バス'], answer: 0,
-        explain: '3ナンバー＝普通乗用車。奇数（3・5）は人を乗せる乗用、と覚えましょう。' },
+        explain: '3ナンバー＝普通乗用車。奇数（3・5）は人を乗せる乗用、と覚えましょう。',
+        q_vi: 'Xe biển số 3 là xe gì?', choices_vi: ['Xe chở người thường', 'Xe tải nhỏ', 'Bus'],
+        explain_vi: 'Biển 3 = xe chở người thường. Số lẻ (3・5) = xe chở người — nhớ quy tắc này nhé.' },
       { type: 'mc', q: '「4ナンバー」はどんな車？', choices: ['小型乗用', '小型貨物', '特種用途'], answer: 1,
-        explain: '4ナンバー＝小型貨物。小さいトラック・バンです。' },
+        explain: '4ナンバー＝小型貨物。小さいトラック・バンです。',
+        q_vi: '「Biển số 4」là loại xe gì?', choices_vi: ['Xe chở người nhỏ', 'Xe tải nhỏ', 'Mục đích đặc biệt'],
+        explain_vi: 'Biển 4 = xe tải nhỏ. Van nhỏ, xe tải nhỏ — đây là loại phổ biến gặp hàng ngày.' },
       { type: 'mc', q: '軽自動車の排気量の上限は？', choices: ['660cc', '1,000cc', '2,000cc'], answer: 0,
-        explain: '軽は660cc以下。サイズも長3.4m・幅1.48m・高2.0m以下です。' },
+        explain: '軽は660cc以下。サイズも長3.4m・幅1.48m・高2.0m以下です。',
+        q_vi: 'Giới hạn dung tích động cơ của xe mini (軽自動車) là bao nhiêu?', choices_vi: ['660cc', '1.000cc', '2.000cc'],
+        explain_vi: 'Xe mini ≤ 660cc. Kích thước cũng ≤ D3.4m・R1.48m・C2.0m.' },
       { type: 'ox', q: '緑ナンバーの車は「事業用（営業用）」である。', answer: true,
-        explain: '正解は〇。緑（軽は黒）＝事業用。タクシーや運送トラックなどです。' },
+        explain: '正解は〇。緑（軽は黒）＝事業用。タクシーや運送トラックなどです。',
+        q_vi: 'Xe biển số xanh lá là xe「thương mại (営業用)」.',
+        explain_vi: 'Đúng (〇). Biển xanh lá (xe mini: biển đen) = thương mại. Taxi, xe tải giao hàng,...' },
     ],
   },
   zeikin: {
-    title: '税金クイズ',
+    title: '税金クイズ', viTitle: 'Quiz Thuế xe',
     questions: [
       { type: 'mc', q: '毎年4月1日時点の持ち主にかかる税金は？', choices: ['自動車税（種別割）', '重量税', '環境性能割'], answer: 0,
-        explain: '自動車税（種別割）。毎年かかり、排気量が大きいほど高くなります。' },
+        explain: '自動車税（種別割）。毎年かかり、排気量が大きいほど高くなります。',
+        q_vi: 'Thuế đánh vào chủ xe tính đến ngày 1/4 hàng năm là?', choices_vi: ['Thuế xe (自動車税)', 'Thuế trọng tải', 'Thuế môi trường'],
+        explain_vi: 'Thuế xe (自動車税). Đánh hàng năm, động cơ lớn hơn thì cao hơn.' },
       { type: 'mc', q: '車検のときにまとめて納め、車の重さで決まる税金は？', choices: ['消費税', '自動車重量税', '自動車税'], answer: 1,
-        explain: '自動車重量税。重い車・古い車ほど高く、車検時にまとめて払います。' },
+        explain: '自動車重量税。重い車・古い車ほど高く、車検時にまとめて払います。',
+        q_vi: 'Thuế nộp gộp khi đăng kiểm, quyết định bởi trọng lượng xe là?', choices_vi: ['Thuế tiêu thụ', 'Thuế trọng tải (重量税)', 'Thuế xe'],
+        explain_vi: 'Thuế trọng tải (重量税). Xe nặng hơn / cũ hơn thì cao hơn, nộp gộp khi đăng kiểm.' },
       { type: 'ox', q: '自動車重量税や自賠責保険料には、消費税がかかる。', answer: false,
-        explain: '正解は×。税金や強制保険は非課税。消費税はかかりません。' },
+        explain: '正解は×。税金や強制保険は非課税。消費税はかかりません。',
+        q_vi: 'Thuế trọng tải và phí bảo hiểm bắt buộc (自賠責) phải nộp thêm thuế tiêu thụ.',
+        explain_vi: 'Sai (×). Thuế và bảo hiểm bắt buộc = miễn thuế tiêu thụ. Đánh thêm sẽ là 2 lần thuế.' },
       { type: 'ox', q: '整備の工賃や部品代には、消費税がかかる。', answer: true,
-        explain: '正解は〇。お店のサービス（工賃・部品）は課税です。' },
+        explain: '正解は〇。お店のサービス（工賃・部品）は課税です。',
+        q_vi: 'Công lao động sửa chữa và phụ tùng thay thế phải chịu thuế tiêu thụ.',
+        explain_vi: 'Đúng (〇). Dịch vụ của cửa hàng (công lao động, phụ tùng) = có thuế tiêu thụ.' },
       { type: 'mc', q: '車を買うときに、燃費性能で金額が決まる税金は？', choices: ['重量税', '環境性能割', '自動車税'], answer: 1,
-        explain: '環境性能割。燃費が良い車ほど安く、電気自動車などは0円です。' },
+        explain: '環境性能割。燃費が良い車ほど安く、電気自動車などは0円です。',
+        q_vi: 'Thuế khi mua xe, quyết định bởi mức tiêu thụ nhiên liệu là?', choices_vi: ['Thuế trọng tải', 'Thuế môi trường (環境性能割)', 'Thuế xe'],
+        explain_vi: 'Thuế môi trường (環境性能割). Xe tiết kiệm xăng thì thấp, EV = 0 yên.' },
     ],
   },
   shaken: {
-    title: '車検クイズ',
+    title: '車検クイズ', viTitle: 'Quiz Đăng kiểm xe',
     questions: [
       { type: 'mc', q: '自家用の乗用車（新車）の、初回の車検は何年後？', choices: ['1年後', '2年後', '3年後'], answer: 2,
-        explain: '新車の乗用車は初回3年。その後は2年ごとです。' },
+        explain: '新車の乗用車は初回3年。その後は2年ごとです。',
+        q_vi: 'Xe chở người cá nhân (xe mới), lần đăng kiểm đầu tiên là sau bao nhiêu năm?', choices_vi: ['1 năm', '2 năm', '3 năm'],
+        explain_vi: 'Xe mới lần đầu 3 năm. Sau đó 2 năm/lần.' },
       { type: 'mc', q: '自家用乗用車の2回目以降の車検は何年ごと？', choices: ['1年ごと', '2年ごと', '3年ごと'], answer: 1,
-        explain: '2回目以降は2年ごと。「新車3年、あとは2年」とセットで覚えましょう。' },
+        explain: '2回目以降は2年ごと。「新車3年、あとは2年」とセットで覚えましょう。',
+        q_vi: 'Từ lần đăng kiểm thứ 2 trở đi của xe chở người cá nhân là bao nhiêu năm/lần?', choices_vi: ['1 năm/lần', '2 năm/lần', '3 năm/lần'],
+        explain_vi: 'Từ lần 2: 2 năm/lần. Nhớ cặp「mới: 3 năm, sau đó: 2 năm」.' },
       { type: 'ox', q: '4ナンバー（小型貨物）の車検は毎年（1年ごと）である。', answer: true,
-        explain: '正解は〇。荷物を運ぶ貨物は傷みやすいので毎年車検です。' },
+        explain: '正解は〇。荷物を運ぶ貨物は傷みやすいので毎年車検です。',
+        q_vi: 'Xe tải nhỏ (biển 4) phải đăng kiểm mỗi năm (1 năm/lần).',
+        explain_vi: 'Đúng (〇). Xe tải chở hàng nặng = mau hỏng hơn = đăng kiểm hàng năm.' },
       { type: 'mc', q: '車検料金のうち「非課税（法定費用）」はどれ？', choices: ['基本点検料', '部品代', '自賠責・重量税・印紙'], answer: 2,
-        explain: '自賠責・重量税・印紙が法定費用＝非課税。基本点検料や部品代はお店のサービスで課税です。' },
+        explain: '自賠責・重量税・印紙が法定費用＝非課税。基本点検料や部品代はお店のサービスで課税です。',
+        q_vi: 'Trong chi phí đăng kiểm,「miễn thuế (phí bắt buộc)」là gì?', choices_vi: ['Phí kiểm tra cơ bản', 'Phụ tùng thay thế', 'Bảo hiểm bắt buộc・Thuế trọng tải・Lệ phí tem'],
+        explain_vi: 'Bảo hiểm bắt buộc・thuế trọng tải・tem = phí bắt buộc = miễn thuế. Phí kiểm tra và phụ tùng = dịch vụ cửa hàng = có thuế.' },
       { type: 'ox', q: '大きくて重い車ほど、車検は高くなりやすい。', answer: true,
-        explain: '正解は〇。重い車ほど重量税が上がるので、総額も高くなります。' },
+        explain: '正解は〇。重い車ほど重量税が上がるので、総額も高くなります。',
+        q_vi: 'Xe lớn hơn và nặng hơn thì chi phí đăng kiểm thường cao hơn.',
+        explain_vi: 'Đúng (〇). Xe nặng hơn → thuế trọng tải cao hơn → tổng chi phí cao hơn.' },
     ],
   },
   hoken: {
-    title: '保険クイズ',
+    title: '保険クイズ', viTitle: 'Quiz Bảo hiểm xe',
     questions: [
       { type: 'mc', q: 'すべての車が必ず入る「強制保険」は？', choices: ['任意保険', '自賠責保険', '車両保険'], answer: 1,
-        explain: '自賠責保険。入っていないと公道を走れません。' },
+        explain: '自賠責保険。入っていないと公道を走れません。',
+        q_vi: '「Bảo hiểm bắt buộc」mà tất cả xe phải có là?', choices_vi: ['Bảo hiểm tự nguyện', 'Bảo hiểm bắt buộc (自賠責)', 'Bảo hiểm thân xe'],
+        explain_vi: 'Bảo hiểm bắt buộc (自賠責). Không có → không được chạy đường công cộng.' },
       { type: 'mc', q: '自賠責保険が守るのは主にどれ？', choices: ['相手のケガ・命（対人）', '相手の車（対物）', '自分の車'], answer: 0,
-        explain: '自賠責は対人だけ。相手の車や自分の車は対象外です。' },
+        explain: '自賠責は対人だけ。相手の車や自分の車は対象外です。',
+        q_vi: 'Bảo hiểm bắt buộc (自賠責) chủ yếu bảo vệ điều gì?', choices_vi: ['Thương tích/tính mạng người khác', 'Xe của người khác', 'Xe của mình'],
+        explain_vi: 'Chỉ bảo vệ thương tích người khác (đối nhân). Xe của người khác hay xe của mình đều không có.' },
       { type: 'mc', q: '相手の車（対物）や自分の車も補償したいときに入るのは？', choices: ['自賠責保険', '任意保険', '重量税'], answer: 1,
-        explain: '任意保険。自賠責の足りない部分を上乗せして備えます。' },
+        explain: '任意保険。自賠責の足りない部分を上乗せして備えます。',
+        q_vi: 'Muốn bảo vệ cả xe của người khác và xe của mình thì dùng loại nào?', choices_vi: ['Bảo hiểm bắt buộc', 'Bảo hiểm tự nguyện', 'Thuế trọng tải'],
+        explain_vi: 'Bảo hiểm tự nguyện. Bù phần bảo hiểm bắt buộc chưa bảo vệ.' },
       { type: 'ox', q: '自賠責保険は、車検のときにまとめて加入する。', answer: true,
-        explain: '正解は〇。だから料金表でも車検の「非課税（法定費用）」に入っています。' },
+        explain: '正解は〇。だから料金表でも車検の「非課税（法定費用）」に入っています。',
+        q_vi: 'Bảo hiểm bắt buộc (自賠責) được mua gộp khi đăng kiểm.',
+        explain_vi: 'Đúng (〇). Vì vậy trong bảng giá, phí bảo hiểm bắt buộc nằm trong「phí bắt buộc (miễn thuế)」của đăng kiểm.' },
       { type: 'ox', q: '自家用と事業用では、保険料が変わることがある。', answer: true,
-        explain: '正解は〇。走る量やリスクが違うため、同じ車でも保険料が変わります。' },
+        explain: '正解は〇。走る量やリスクが違うため、同じ車でも保険料が変わります。',
+        q_vi: 'Xe cá nhân và xe thương mại có thể có phí bảo hiểm khác nhau.',
+        explain_vi: 'Đúng (〇). Mức độ sử dụng và rủi ro khác nhau nên cùng một xe mà phí bảo hiểm có thể khác.' },
     ],
   },
   kozo: {
-    title: '構造・仕組みクイズ',
+    title: '構造・仕組みクイズ', viTitle: 'Quiz Cấu tạo xe',
     questions: [
       { type: 'ox', q: 'ディーゼルエンジンの車には「軽油」を入れる。', answer: true,
-        explain: '正解は〇。ディーゼルは軽油。ガソリンを入れると重大な故障になるので、受付でも燃料の種類を確認する習慣をつけましょう。' },
+        explain: '正解は〇。ディーゼルは軽油。ガソリンを入れると重大な故障になるので、受付でも燃料の種類を確認する習慣をつけましょう。',
+        q_vi: 'Xe động cơ diesel phải đổ「dầu diesel (軽油)」.',
+        explain_vi: 'Đúng (〇). Diesel dùng dầu diesel. Đổ nhầm xăng vào sẽ gây hỏng nghiêm trọng — khi tiếp khách hãy xác nhận loại nhiên liệu!' },
       { type: 'mc', q: 'MT（マニュアル）車にあって、AT車にないペダルは？', choices: ['アクセル', 'ブレーキ', 'クラッチ'], answer: 2,
-        explain: 'クラッチ。MT車は3ペダル（アクセル・ブレーキ・クラッチ）で、AT車は2ペダル。AT限定免許の方はクラッチ操作ができないので代車手配のとき要確認。' },
+        explain: 'クラッチ。MT車は3ペダル（アクセル・ブレーキ・クラッチ）で、AT車は2ペダル。AT限定免許の方はクラッチ操作ができないので代車手配のとき要確認。',
+        q_vi: 'Bàn đạp có ở xe MT (số tay) nhưng không có ở xe AT (tự động) là?', choices_vi: ['Ga (Accelerator)', 'Phanh (Brake)', 'Côn (Clutch)'],
+        explain_vi: 'Côn (Clutch). Xe MT có 3 bàn đạp (ga・phanh・côn), xe AT có 2 bàn đạp. Khách có bằng lái AT hạn chế không lái được xe MT!' },
       { type: 'ox', q: '「FF」とはフロントエンジン・フロントドライブの略で、前輪が駆動する方式だ。', answer: true,
-        explain: '正解は〇。FFは前輪駆動。コンパクトカーや軽自動車に多い。対してFRは後輪駆動で高級車・スポーツカーに多いです。' },
+        explain: '正解は〇。FFは前輪駆動。コンパクトカーや軽自動車に多い。対してFRは後輪駆動で高級車・スポーツカーに多いです。',
+        q_vi: '「FF」là viết tắt của Front-engine Front-drive, tức là hệ dẫn động cầu trước.',
+        explain_vi: 'Đúng (〇). FF = cầu trước. Phổ biến ở xe compact và xe mini. FR = cầu sau, thường ở xe sang và xe thể thao.' },
       { type: 'mc', q: 'エンジンオイルの主な役割は？', choices: ['エンジン内部の潤滑・冷却', '燃料タンクに燃料を送り込む', '排気ガスをきれいにする'], answer: 0,
-        explain: 'エンジンオイルはエンジン内部の金属同士の摩擦を減らし（潤滑）、熱を逃がす（冷却）役割をします。定期交換が整備の基本です。' },
+        explain: 'エンジンオイルはエンジン内部の金属同士の摩擦を減らし（潤滑）、熱を逃がす（冷却）役割をします。定期交換が整備の基本です。',
+        q_vi: 'Vai trò chính của dầu động cơ là?', choices_vi: ['Bôi trơn & làm mát bên trong động cơ', 'Bơm nhiên liệu vào bình xăng', 'Lọc sạch khí thải'],
+        explain_vi: 'Dầu động cơ giảm ma sát (bôi trơn) và tản nhiệt (làm mát) các bộ phận kim loại bên trong. Thay định kỳ là cơ bản của nghề bảo dưỡng.' },
       { type: 'mc', q: '「ブレーキパッド」が使われるブレーキの種類は？', choices: ['ドラムブレーキ', 'ディスクブレーキ', 'ABSブレーキ'], answer: 1,
-        explain: 'ブレーキパッドはディスクブレーキで使われる消耗品。ドラムブレーキで使われるのはブレーキシュー。前輪はディスク・後輪はドラムという構成の車が多いです。' },
+        explain: 'ブレーキパッドはディスクブレーキで使われる消耗品。ドラムブレーキで使われるのはブレーキシュー。前輪はディスク・後輪はドラムという構成の車が多いです。',
+        q_vi: '「Má phanh (brake pad)」được dùng ở loại phanh nào?', choices_vi: ['Phanh tang trống (ドラムブレーキ)', 'Phanh đĩa (ディスクブレーキ)', 'Phanh ABS'],
+        explain_vi: 'Má phanh (brake pad) dùng cho phanh đĩa. Phanh tang trống thì dùng guốc phanh (brake shoe). Nhiều xe cấu hình: bánh trước đĩa・bánh sau tang trống.' },
     ],
   },
 };
@@ -1117,7 +1479,7 @@ function setBack(show) {
 function showHome() {
   navStack = [];
   showScreen('screen-home');
-  setTitle('車屋のいろは');
+  setTitle(UI[lang].appTitle);
   setBack(false);
   updateNavTabs('home');
   renderBreadcrumb();
@@ -1125,17 +1487,19 @@ function showHome() {
 }
 function showLesson(key) {
   const l = LESSONS[key];
-  navStack = [{ id: 'screen-' + key, title: l.title, nav: l.nav, type: 'lesson', key }];
+  const title = l[lang] || l.ja;
+  navStack = [{ id: 'screen-' + key, title, nav: l.nav, type: 'lesson', key }];
   showScreen('screen-' + key);
-  setTitle(l.title);
+  setTitle(title);
   setBack(true);
   updateNavTabs(l.nav);
   renderBreadcrumb();
 }
 function showQuizMenu() {
-  navStack = [{ id: 'screen-quiz-menu', title: 'クイズ', nav: 'quiz', type: 'qmenu' }];
+  const title = UI[lang].quizMenuTitle;
+  navStack = [{ id: 'screen-quiz-menu', title, nav: 'quiz', type: 'qmenu' }];
   showScreen('screen-quiz-menu');
-  setTitle('クイズで力だめし');
+  setTitle(title);
   setBack(true);
   updateNavTabs('quiz');
   renderBreadcrumb();
@@ -1157,8 +1521,8 @@ function goBack() {
 // ==================== パンくず ====================
 function renderBreadcrumb() {
   const bc = document.getElementById('breadcrumb');
-  if (navStack.length === 0) { bc.innerHTML = '<span class="bc-cur">ホーム</span>'; return; }
-  let html = '<span class="bc-item" onclick="showHome()">ホーム</span>';
+  if (navStack.length === 0) { bc.innerHTML = '<span class="bc-cur">'+UI[lang].breadHome+'</span>'; return; }
+  let html = '<span class="bc-item" onclick="showHome()">'+UI[lang].breadHome+'</span>';
   navStack.forEach((item, i) => {
     html += '<span class="bc-sep">›</span>';
     if (i === navStack.length - 1) html += '<span class="bc-cur">' + item.title + '</span>';
@@ -1170,8 +1534,9 @@ function renderBreadcrumb() {
 // ==================== クイズ ====================
 function startQuiz(key) {
   quizState = { key, index: 0, score: 0, total: QUIZZES[key].questions.length };
-  navStack = [{ id: 'screen-quiz', title: QUIZZES[key].title, nav: 'quiz', type: 'quiz', key }];
-  setTitle(QUIZZES[key].title);
+  const qtitle = QUIZZES[key][lang+'Title'] || QUIZZES[key].title;
+  navStack = [{ id: 'screen-quiz', title: qtitle, nav: 'quiz', type: 'quiz', key }];
+  setTitle(qtitle);
   setBack(true);
   updateNavTabs('quiz');
   showScreen('screen-quiz');
@@ -1183,40 +1548,48 @@ function renderQuestion() {
   const { key, index, total } = quizState;
   const quiz = QUIZZES[key];
   const q = quiz.questions[index];
-  document.getElementById('quiz-progress').textContent = '第 ' + (index + 1) + ' 問 / 全 ' + total + ' 問';
+  const u = UI[lang];
+  document.getElementById('quiz-progress').textContent = u.progress(index, total);
   document.getElementById('quiz-bar').style.width = (index / total * 100) + '%';
 
+  // 問題テキストは言語別
+  const qText = (lang === 'vi' && q.q_vi) ? q.q_vi : q.q;
+  const explain = (lang === 'vi' && q.explain_vi) ? q.explain_vi : q.explain;
+  // choicesも言語別
+  const choices = (lang === 'vi' && q.choices_vi) ? q.choices_vi : (q.choices || []);
+
   const body = document.getElementById('quiz-body');
-  let html = '<div class="quiz-q"><span class="q-tag">' + (q.type === 'ox' ? '〇×問題' : '選んでね') + '</span><br>' + q.q + '</div>';
+  let html = '<div class="quiz-q"><span class="q-tag">' + (q.type === 'ox' ? u.qTagOX : u.qTagMC) + '</span><br>' + qText + '</div>';
 
   if (q.type === 'ox') {
     html += '<div class="ox-choices">' +
-      '<button class="ox-btn" id="ox-true" onclick="answerOX(true)">〇<span class="ox-label">正しい</span></button>' +
-      '<button class="ox-btn" id="ox-false" onclick="answerOX(false)">×<span class="ox-label">ちがう</span></button>' +
+      '<button class="ox-btn" id="ox-true" onclick="answerOX(true)">' + u.oxTrue[0] + '<span class="ox-label">' + u.oxTrue[1] + '</span></button>' +
+      '<button class="ox-btn" id="ox-false" onclick="answerOX(false)">' + u.oxFalse[0] + '<span class="ox-label">' + u.oxFalse[1] + '</span></button>' +
       '</div>';
   } else {
     html += '<div class="choices">';
-    q.choices.forEach((c, i) => {
+    choices.forEach((c, i) => {
       html += '<button class="choice" id="ch-' + i + '" onclick="answerMC(' + i + ')"><span class="c-mark">' + (i + 1) + '.</span>' + c + '</button>';
     });
     html += '</div>';
   }
   html += '<div class="feedback" id="feedback"><span class="fb-head" id="fb-head"></span><span class="fb-exp" id="fb-exp"></span></div>';
-  html += '<button class="btn-next" id="btn-next" onclick="nextQuestion()">次へ →</button>';
+  html += '<button class="btn-next" id="btn-next" onclick="nextQuestion()">'+u.nextBtn+'</button>';
   body.innerHTML = html;
 }
 
 function lockChoices() {
   document.querySelectorAll('#quiz-body .choice, #quiz-body .ox-btn').forEach(el => el.classList.add('disabled'));
 }
-function showFeedback(correct, explain) {
+function showFeedback(correct, explainText) {
+  const u = UI[lang];
   const fb = document.getElementById('feedback');
   fb.className = 'feedback show ' + (correct ? 'ok' : 'ng');
-  document.getElementById('fb-head').textContent = correct ? '⭕ 正解！' : '❌ 残念…';
-  document.getElementById('fb-exp').textContent = explain;
+  document.getElementById('fb-head').textContent = correct ? u.correct : u.wrong;
+  document.getElementById('fb-exp').textContent = explainText;
   document.getElementById('btn-next').classList.add('show');
   const nextBtn = document.getElementById('btn-next');
-  if (quizState.index === quizState.total - 1) nextBtn.textContent = '結果を見る →';
+  nextBtn.textContent = (quizState.index === quizState.total - 1) ? u.lastBtn : u.nextBtn;
 }
 
 function answerMC(choice) {
@@ -1226,7 +1599,8 @@ function answerMC(choice) {
   document.getElementById('ch-' + q.answer).classList.add('correct');
   if (!correct) document.getElementById('ch-' + choice).classList.add('wrong');
   lockChoices();
-  showFeedback(correct, q.explain);
+  const exp = (lang === 'vi' && q.explain_vi) ? q.explain_vi : q.explain;
+  showFeedback(correct, exp);
 }
 function answerOX(val) {
   const q = QUIZZES[quizState.key].questions[quizState.index];
@@ -1235,7 +1609,8 @@ function answerOX(val) {
   document.getElementById(q.answer ? 'ox-true' : 'ox-false').classList.add('correct');
   if (!correct) document.getElementById(val ? 'ox-true' : 'ox-false').classList.add('wrong');
   lockChoices();
-  showFeedback(correct, q.explain);
+  const exp = (lang === 'vi' && q.explain_vi) ? q.explain_vi : q.explain;
+  showFeedback(correct, exp);
 }
 
 function nextQuestion() {
@@ -1246,10 +1621,11 @@ function nextQuestion() {
 
 function showResult() {
   const { key, score, total } = quizState;
+  const u = UI[lang];
   saveBest(key, score);
-  navStack = [{ id: 'screen-result', title: '結果', nav: 'quiz', type: 'result', key }];
+  navStack = [{ id: 'screen-result', title: u.resultTitle, nav: 'quiz', type: 'result', key }];
   showScreen('screen-result');
-  setTitle('クイズ結果');
+  setTitle(u.resultTitle);
   setBack(true);
   updateNavTabs('quiz');
   renderBreadcrumb();
@@ -1257,14 +1633,19 @@ function showResult() {
 
   document.getElementById('r-num').textContent = score;
   document.getElementById('r-total').textContent = total;
+  document.getElementById('r-score-label').textContent = u.scoreLabel;
+  document.getElementById('btn-retry').textContent = u.retryBtn;
+  document.querySelector('.btn-home').textContent = u.homeBtn;
+
   const ratio = score / total;
-  let emoji, msg;
-  if (ratio === 1) { emoji = '🏆'; msg = 'パーフェクト！完璧です。受付でも自信を持って案内できますね。'; }
-  else if (ratio >= 0.8) { emoji = '🎉'; msg = 'よくできました！あと少しで満点。解説をもう一度読んでみましょう。'; }
-  else if (ratio >= 0.6) { emoji = '👍'; msg = 'いい調子。間違えたところはレッスンに戻って復習しましょう。'; }
-  else { emoji = '📖'; msg = 'もう一度レッスンを読んでから挑戦してみましょう。くり返せば必ず覚えられます。'; }
+  let emoji;
+  if (ratio === 1) emoji = '🏆';
+  else if (ratio >= 0.8) emoji = '🎉';
+  else if (ratio >= 0.6) emoji = '👍';
+  else emoji = '📖';
+  const msgIdx = ratio === 1 ? 0 : ratio >= 0.8 ? 1 : ratio >= 0.6 ? 2 : 3;
   document.getElementById('r-emoji').textContent = emoji;
-  document.getElementById('r-msg').textContent = msg;
+  document.getElementById('r-msg').textContent = u.msgs[msgIdx];
   document.getElementById('btn-retry').onclick = () => startQuiz(key);
 }
 
@@ -1277,22 +1658,28 @@ function saveBest(key, score) {
   } catch (e) {}
 }
 function refreshBestScores() {
+  const u = UI[lang];
   Object.keys(QUIZZES).forEach(key => {
-    const el = document.getElementById('best-' + key);
-    if (!el) return;
-    let best = 0;
-    try { best = parseInt(localStorage.getItem('iroha_best_' + key) || '0', 10); } catch (e) {}
-    const total = QUIZZES[key].questions.length;
-    el.textContent = best > 0 ? '最高記録 ' + best + ' / ' + total + (best === total ? ' 🏆' : '') : '';
+    ['', '-vi'].forEach(suffix => {
+      const el = document.getElementById('best-' + key + suffix);
+      if (!el) return;
+      let best = 0;
+      try { best = parseInt(localStorage.getItem('iroha_best_' + key) || '0', 10); } catch (e) {}
+      const total = QUIZZES[key].questions.length;
+      el.textContent = best > 0 ? u.bestMark(best, total) : '';
+    });
   });
 }
 function refreshProgress() {
+  const u = UI[lang];
   ['shumoku', 'zeikin', 'shaken', 'hoken', 'kozo'].forEach(key => {
-    const el = document.getElementById('done-' + key);
-    if (!el) return;
-    let done = false;
-    try { done = localStorage.getItem('iroha_done_' + key) === '1'; } catch (e) {}
-    el.textContent = done ? '✓ クイズ挑戦ずみ' : '';
+    ['', '-vi'].forEach(suffix => {
+      const el = document.getElementById('done-' + key + suffix);
+      if (!el) return;
+      let done = false;
+      try { done = localStorage.getItem('iroha_done_' + key) === '1'; } catch (e) {}
+      el.textContent = done ? u.doneMark : '';
+    });
   });
 }
 
@@ -1304,6 +1691,7 @@ document.querySelectorAll('table').forEach(function (t) {
   t.parentNode.insertBefore(wrap, t);
   wrap.appendChild(t);
 });
+applyLang();
 showHome();
 </script>
 </body>
